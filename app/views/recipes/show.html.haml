@@ -25,7 +25,7 @@
 	.row
 		.col-md-12
 			= link_to "Back", root_path, class: 'btn btn_default'
-			- if user_signed_in?
+			- if user_signed_in? && current_user.id == @recipe.user.id
 				= link_to "Edit", edit_recipe_path, class: 'btn btn_default'
 				= link_to "Delete", recipe_path, method: :delete, data: {confirm: "Are you sure ?"} , class: 'btn btn-danger'
 

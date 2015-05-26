@@ -16,6 +16,22 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
+#notice_wrapper {
+	top: 0px;
+    position: absolute;
+    width: 100%;
+    z-index: 999;
+    background: none repeat scroll 0% 0% rgba(135, 216, 211, 0.85);
+	.notice, .alert {
+		padding: 0.5em 0px;
+		text-align: center;
+		margin: 0px;
+		font-weight: 700;
+		color: rgb(255, 255, 255);
+		font-size: 2em;
+	}
+}
+
 @mixin box-shadow {
 	-webkit-box-shadow: rgba(0, 0, 0, 0.09) 0 2px 0;
 	-moz-box-shadow: rgba(0, 0, 0, 0.09) 0 2px 0;
