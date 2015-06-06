@@ -5,6 +5,10 @@
 		.col-md-8
 			#recipe_info
 				%h1=@recipe.title
+				- if @recipe.dishtype.present?
+					%h1=@dishtype.name
+				- else
+					%h1 Problem !
 				%p.description= @recipe.description
 				%p 
 					Submitted by

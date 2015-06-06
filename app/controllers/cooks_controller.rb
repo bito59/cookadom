@@ -2,6 +2,7 @@ class CooksController < ApplicationController
 
 	def index
 		@cooks = User.all
+		
 	end
 
 

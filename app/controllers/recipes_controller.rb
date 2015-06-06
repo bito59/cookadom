@@ -3,10 +3,21 @@ before_action :find_recipe, only: [:show, :update, :edit, :destroy]
 before_action :authenticate_user!, except: [:index, :show]
 
 	def index
-		@recipe = Recipe.all.order("created_at DESC")
+		if params[:user_id].blank?
+			@recipes = Recipe.all.order("created_at DESC")
+		else
+			@cook = User.find_by(id: params[:user_id])
+			@recipes = Recipe.where(user_id: params[:user_id]).order("created_at DESC")
+
+			unless params[:dishtype].blank?
+				@dishtype_id = Dishtype.find_by(name: params[:dishtype]).id
+				@recipes = @recipes.where(dishtype_id: @dishtype_id).order("created_at DESC")
+			end
+		end
 	end
 
 	def show
+		@dishtype = Dishtype.find_by(id: @recipe.dishtype_id)
 	end
 
 	def new 
@@ -42,7 +53,7 @@ before_action :authenticate_user!, except: [:index, :show]
 	private 
 
 	def recipe_params
-		params.require(:recipe).permit(	:title, :description, :image, 
+		params.require(:recipe).permit(	:title, :description, :image, :dishtype_id,
 										ingredients_attributes: [:id, :name, :_destroy],
 										directions_attributes: [:id, :step, :_destroy]
 										)

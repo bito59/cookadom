@@ -1,4 +1,4 @@
-= simple_form_for @recipe, html: {multipart: true } do |f|
+= simple_form_for @recipe, html: { multipart: true } do |f|
 	- if @recipe.errors.any?
 		#errors
 			%p
@@ -8,6 +8,7 @@
 				- @recipe.errors.full_message.each do |msg|
 					%li = msg
 	.panel-body
+		= f.collection_select :dishtype_id, Dishtype.all, :id, :name, {prompt: "Choose a type of Dish" }
 		= f.input :title, input_html: { class: 'form-control'}
 		= f.input :description, input_html: {class: 'form-control'}
 		= f.input :image, input_html: {class: 'form-control'}

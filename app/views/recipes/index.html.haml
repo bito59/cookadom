@@ -1,4 +1,4 @@
-- @recipe.each_slice(3) do |recipes|
+- @recipes.each_slice(3) do |recipes|
 	.row
 		-recipes.each do |recipe|
 			.col-md-4
@@ -6,5 +6,5 @@
 					.image_wrapper
 						=link_to recipe do
 							=image_tag recipe.image.url(:thumb)
-					%h2= link_to recipe.title, recipe
+					%h2= link_to recipe.title, root_path
 
