@@ -21,7 +21,7 @@
 			.navbar-brand= link_to "Cook@dom", root_path
 			- if user_signed_in?
 				%ul.nav.navbar-nav.navbar-right
-					%li= link_to current_user.email, root_path
+					%li= link_to current_user.email, users_path
 					%li= link_to "New recipe", new_recipe_path
 					%li= link_to "Sign Out", destroy_user_session_path, method: :delete
 			- else

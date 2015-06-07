@@ -1,0 +1,5 @@
+%h1='Hello ' + current_user.email + '  !!'
+
+%li=link_to "Modifier mon compte", edit_user_registration_path(@user)
+%li=link_to "Supprimer mon compte", user_registration_path(@user), data: { confirm: "Are you sure?" }, method: :delete 
+
