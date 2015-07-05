@@ -17,6 +17,7 @@ before_action :authenticate_user!, except: [:index, :show]
 	end
 
 	def show
+		@cook = Cook.find_by(user_id: @recipe.user_id)
 		@dishtype = Dishtype.find_by(id: @recipe.dishtype_id)
 	end
 
