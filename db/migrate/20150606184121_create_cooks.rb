@@ -1,9 +1,10 @@
 class CreateCooks < ActiveRecord::Migration
   def change
     create_table :cooks do |t|
-      t.integer :user_id
+      t.references :user, index: true
       t.string :name
       t.string :postal_code
+      t.string :working_distance
       t.text :introduction
 
       t.timestamps null: false

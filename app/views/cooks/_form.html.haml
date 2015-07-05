@@ -1,0 +1,9 @@
+= simple_form_for @cook, html: { multipart: true } do |f|
+	= f.input :name
+	= f.input :postal_code
+	= f.input :working_distance
+	= f.input :introduction
+
+	= f.button :submit, class: 'btn btn-default'
+
+= link_to "Back", root_path

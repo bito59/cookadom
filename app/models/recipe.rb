@@ -3,7 +3,8 @@ class Recipe < ActiveRecord::Base
 	has_many :ingredients
 	has_many :directions
 
-	belongs_to :user
+	#belongs_to :user
+	belongs_to :cook
 	belongs_to :dishtype
 
 	accepts_nested_attributes_for 	:ingredients, 

@@ -12,7 +12,8 @@
 				%p.description= @recipe.description
 				%p 
 					Submitted by
-					=@recipe.user.email
+					=@recipe.cook.name
+					//=@recipe.user.email
 	.row
 		.col-md-6
 			#ingredients

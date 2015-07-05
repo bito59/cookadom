@@ -3,3 +3,11 @@
 %li=link_to "Modifier mon compte", edit_user_registration_path(@user)
 %li=link_to "Supprimer mon compte", user_registration_path(@user), data: { confirm: "Are you sure?" }, method: :delete 
 
+- if @cook.blank?
+	%li=link_to "Activer mon cook", new_cook_path, class: 'btn btn-info'
+- else
+	%li=@cook.name
+	%li=@cook.introduction
+	%li=@cook.postal_code
+	%li=@cook.working_distance
+	%li=link_to "Désactiver mon cook", cook_path(@cook), method: :delete, data: {confirm: "Your cook will be deleted ?"}, class: 'btn btn-danger'
