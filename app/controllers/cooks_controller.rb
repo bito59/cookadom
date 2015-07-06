@@ -26,8 +26,9 @@ before_action :authenticate_user!, except: [:index]
 	end
 
 	def destroy
+		Recipe.where(user_id: @cook.user_id).destroy_all
 		@cook.destroy
-		redirect_to root_path, notice: 'Le cuisinier a bien été détruit...'
+		redirect_to users_path, notice: 'Le cuisinier a bien été détruit avec les recettes...'
 	end
 
 	private
