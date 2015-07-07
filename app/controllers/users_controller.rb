@@ -11,7 +11,7 @@ class UsersController < ApplicationController
 	    @user.destroy
 
 	    if @user.destroy
-	        redirect_to root_path, notice: 'Votre compte a été supprimé...'
+	        redirect_to root_path, notice: t('.notice')
 	    end
   	end
 
