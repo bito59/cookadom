@@ -3,8 +3,12 @@ before_action :find_cook, only: [:update, :edit, :destroy]
 before_action :authenticate_user!, except: [:index]
 
 	def index
-		@cooks = Cook.all
-	end
+		if params[:lat] == '0' &&  params[:lng] == '0' 
+			@cooks = Cook.all
+		else
+			@cooks = Cook.all
+		end
+	end	
 
 	def new
 		@cook = current_user.build_cook
@@ -23,6 +27,11 @@ before_action :authenticate_user!, except: [:index]
 	end
 
 	def update
+		if @cook.update(cook_params)
+			redirect_to users_path, notice: "Le cuisinier a bien été updaté !"
+		else
+			render 'edit'
+		end
 	end
 
 	def destroy

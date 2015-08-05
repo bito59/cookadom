@@ -3,6 +3,7 @@
 %head
 	%title Cook@dom
 	= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+	= javascript_include_tag 'http://maps.googleapis.com/maps/api/js?sensor=false&libraries=places'
 	= javascript_include_tag 'application', 'data-turbolinks-track' => true
 	= csrf_meta_tags
 
@@ -18,6 +19,8 @@
 %body
 	%nav.navbar.navbar-default
 		.container
+			%ul.nav.navbar-nav.navbar-left
+				%li= link_to "Comment ça marche", root_path
 			.navbar-brand= link_to "Cook@dom", root_path
 			- if user_signed_in?
 				%ul.nav.navbar-nav.navbar-right
@@ -35,6 +38,12 @@
 	.container
 		= yield
 
+%footer
+	%nav.navbar.navbar-default
+		.container
+			%ul.nav.navbar-nav.navbar-left
+				%li= link_to "footer", root_path
+
 
 :javascript
 	$(document).ready(function(){
@@ -43,4 +52,11 @@
 				$(this).remove();
 			});
 		}, 3500);
+	});
+	$(function(){
+		$("#address")
+			.geocomplete({details: "form"})
+			.bind("geocode:result", function(event, result){
+				console.log(result)
+			});
 	});

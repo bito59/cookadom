@@ -1,8 +1,20 @@
 %h1 Bienvenue sur cook@dom !
+%h2 photo sympa
+
+= form_tag cooks_path, :method => :get do
+	%p
+		= text_field_tag :address, 'address', value: '', placeholder: 'Lieu du cours de cuisine'
+		= text_field_tag :lat, 'lat', value: '0'
+		= text_field_tag :lng, 'lng', value: '0'
+		= submit_tag "Voir les cuisiniers", :name => nil, class: 'btn btn-info'
+
 
 =link_to "Voir les cuisiniers", cooks_path, class: 'btn btn-info'
 
-- if user_signed_in?
+%h2 icones d'explication du concept
+
+
+- if user_signed_in? && @cook.blank?
 	=link_to "devenir cuisinier", new_cook_path, class: 'btn btn-info'
 - else
 	=link_to "s'inscrire", new_user_registration_path, class: 'btn btn-info'
@@ -11,3 +23,4 @@
 - if @cooks.count > 0
 	- @cooks.each do |cook|
 		%li= link_to cook.name, recipes_path(user_id: cook.user_id)
+

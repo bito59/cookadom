@@ -72,6 +72,9 @@ GEM
       warden (~> 1.2.3)
     erubis (2.7.0)
     execjs (2.5.2)
+    geocoder (1.2.9)
+    geocomplete_rails (1.6.5)
+      railties (>= 3.1)
     globalid (0.3.5)
       activesupport (>= 4.1.0)
     haml (4.0.6)
@@ -180,6 +183,8 @@ DEPENDENCIES
   cocoon (~> 1.2.6)
   coffee-rails (~> 4.1.0)
   devise (~> 3.5.0)
+  geocoder
+  geocomplete_rails
   haml (~> 4.0.6)
   jbuilder (~> 2.0)
   jquery-rails
