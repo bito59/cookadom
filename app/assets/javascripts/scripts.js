@@ -1,3 +1,25 @@
+function geocomp(balise) {
+        $('#'+balise)
+            .geocomplete({details: "form"})
+            .bind("geocode:result", function(event, result){
+                console.log(result)
+            });
+}
+
+function load_google() {
+    var s = document.createElement("script");
+    s.type = "text/javascript";
+    s.src = "http://maps.googleapis.com/maps/api/js?sensor=false&libraries=places";
+    $("head").append(s);
+}
+
+function dede() {
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = 'https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places';
+    document.body.appendChild(script);
+};
+
 function address_complete() {
     $('#addressForm')
         .formValidation({

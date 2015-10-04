@@ -3,8 +3,16 @@ before_action :find_cook, only: [:update, :edit, :destroy]
 before_action :authenticate_user!, except: [:index]
 
 	def index
-		if params[:lat] == '0' &&  params[:lng] == '0' 
-			@cooks = Cook.all
+		if params[:address].present? 
+			@cooks = []
+			@nearcooks = []
+			Cook.all.each do |cook|
+				if cook.distance_from(params[:address]).to_f < cook.working_distance.to_f
+					@cooks << cook
+				elsif cook.distance_from(params[:address]).to_f < 10000
+					@nearcooks << cook
+				end
+			end
 		else
 			@cooks = Cook.all
 		end

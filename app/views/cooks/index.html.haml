@@ -1,4 +1,16 @@
 %h1 Here will be the cooks !
 
-- @cooks.each do |cook|
-	%li= link_to cook.name, recipes_path(user_id: cook.user_id)
+- if @cooks.blank?
+	Désolé aucun résultat :(
+	- unless @nearcooks.blank?
+		On a quand même d'autres propositions pas très loin !
+		- if @nearcooks.respond_to?('each')
+			- @nearcooks.each do |cook|
+				%li= link_to cook.name, recipes_path(user_id: cook.user_id)
+		- else
+			%li= link_to @cooks.name, recipes_path(user_id: @cooks.user_id)
+- elsif @cooks.respond_to?('each')
+	- @cooks.each do |cook|
+		%li= link_to cook.name, recipes_path(user_id: cook.user_id)
+- else
+	%li= link_to @cooks.name, recipes_path(user_id: @cooks.user_id)

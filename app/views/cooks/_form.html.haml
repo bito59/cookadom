@@ -7,3 +7,12 @@
 	= f.button :submit, class: 'btn btn-default'
 
 = link_to "Back", root_path
+
+:javascript
+	$(function(){
+		$("#postal_code")
+			.geocomplete()
+			.bind("geocode:result", function(event, result){
+				console.log(result)
+			});
+	});
