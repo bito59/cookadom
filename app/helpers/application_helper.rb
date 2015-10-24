@@ -1,2 +1,8 @@
 module ApplicationHelper
+
+	def xeditable? object = nil
+  		true # Or something like current_user.xeditable?
+  		#xeditable = true
+	end
+
 end

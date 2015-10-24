@@ -1,16 +1,49 @@
-%h1 Here will be the cooks !
+= render :partial => 'shared/searchbar'
 
-- if @cooks.blank?
-	Désolé aucun résultat :(
-	- unless @nearcooks.blank?
-		On a quand même d'autres propositions pas très loin !
-		- if @nearcooks.respond_to?('each')
-			- @nearcooks.each do |cook|
-				%li= link_to cook.name, recipes_path(user_id: cook.user_id)
-		- else
-			%li= link_to @cooks.name, recipes_path(user_id: @cooks.user_id)
-- elsif @cooks.respond_to?('each')
-	- @cooks.each do |cook|
-		%li= link_to cook.name, recipes_path(user_id: cook.user_id)
-- else
-	%li= link_to @cooks.name, recipes_path(user_id: @cooks.user_id)
+.row
+	.title
+		%h1= "Les cooks " + @message
+.row
+	.col-xs-6.col-md-8
+		- if @adress.present?
+			.adress_area
+				%h4=@adress
+				= link_to cooks_path do
+					= image_tag "icons/cross.png", class: "logo_field"
+	.col-xs-6.col-md-4
+		.row
+			.col-xs-3	
+				%h4= "trier par :"
+			.col-xs-3	
+				%h4=link_to "note"
+			.col-xs-3	
+				%h4=link_to "prix"
+			.col-xs-3	
+				%h4=link_to "nom"
+
+- @cooks.each_slice(4) do |slice|
+	.row
+		- @cooks.each do |name, object|
+			.col-xs-6.col-md-3
+				.cook
+					- if object[:in_range] == "OK"
+						= image_tag "icons/ok.png" 
+						%h6= "Distance : " + object[:distance] + " km"
+					- elsif object[:in_range] == "QUESTION"
+						= image_tag "icons/question.png" 
+						%h6= "Distance : " + object[:distance] + " km"
+
+					= image_tag "tete.png"
+					%h5= link_to object[:details][:name], recipes_path(user_id: object[:details][:user_id])
+					%h5 specialités
+					%h5 20€ / pers
+					= link_to recipes_path(id: object[:details][:id]) do
+						%h5= pluralize(object[:nb_recipes].to_s, 'recette')
+					= link_to comments_path(id: object[:details][:id]) do
+						%h5= "(" + object[:nb_avis].to_s + " avis)"
+					= "Note : " + object[:nb_stars].round(1).to_s	
+					- object[:nb_stars].round.times do 
+						= image_tag "icons/star.png"
+
+
+

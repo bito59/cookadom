@@ -1,0 +1,30 @@
+
+// AJAX with Json
+	$(document).ready(function(){
+	    $('#dish_type').editable({
+	        ajaxOptions:{
+	            type: 'put',
+	            dataType: 'json'
+	        },
+	        success: function(response, newValue) {
+	            if(!response.success) alert(response.msg);
+	        }
+	    });
+	});
+
+
+
+// balise a for bootstrap-x-editable-rails
+.row
+	%a{"href"=>"#", "id"=>"dish_type", "data-model"=>"recipe", "data-xeditable"=>"true", "data-type"=>"text", "data-pk"=>@recipe.id, "data-url"=>"/recipes/" + @recipe.id.to_s, "data-title"=>"Enter dish_type"}
+		= @recipe.dish_type
+
+
+//- logger.info("My object: #{@rank_list}")
+
+//$("#directions").append("<%= j render 'shared/direction', direction: @direction %>");
+$('.delete_direction').bind('ajax:success', function() {
+	//$(this).parentNode.id.fadeOut();
+	//$(this).fadeOut();
+	$(this).closest('div').remove();
+}); 

@@ -1,0 +1,26 @@
+#search_bar.row
+	.col-xs-4.col-sm-3.col-md-2
+		= form_tag cooks_path, :method => :get do
+			= hidden_field_tag :lat
+			= hidden_field_tag :lng
+			= hidden_field_tag :formatted_address
+			= submit_tag "VOIR LES COOKS", :name => nil, class: 'btn_search_cook_green'
+	
+	.col-xs-4.col-sm-6.col-md-8
+		.row
+			.col-xs-2
+				= image_tag "icons/position.png", class: "logo_field"
+			.col-xs-8
+				= text_field_tag :address, 'address', value: '', placeholder: 'Adresse de ma cuisine', class: ''
+			.col-xs-2
+				= image_tag "icons/kitchen.png", class: "logo_field"
+
+	.col-xs-4.col-sm-3.col-md-2
+		= form_tag recipes_path, :method => :get do
+			= hidden_field_tag :lat
+			= hidden_field_tag :lng
+			= hidden_field_tag :formatted_address
+			= submit_tag "VOIR LES RECETTES", :name => nil, class: 'btn_search_recipe_green'
+
+
+

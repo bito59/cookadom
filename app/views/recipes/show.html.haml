@@ -1,36 +1,47 @@
-.main_content
-	#recipe_top.row
-		.col-md-4
-			= image_tag @recipe.image.url(:medium), class: "recipe_image"
-		.col-md-8
-			#recipe_info
-				%h1=@recipe.title
-				- if @recipe.dishtype.present?
-					%h1=@dishtype.name
-				- else
-					%h1 Problem !
-				%p.description= @recipe.description
-				%p 
-					Submitted by
-					=@cook.name
-					//=@recipe.user.email
-	.row
-		.col-md-6
-			#ingredients
-				%h2 Ingredients
-				%ul
-					- @recipe.ingredients.each do |ingredient|
-						%li= ingredient.name
-		.col-md-6
-			#directions
-				%h2 Directions
-				%ul
-					- @recipe.directions.each do |direction|
-						%li= direction.step
-	.row
-		.col-md-12
-			= link_to "Back", users_path, class: 'btn btn_default'
+= render :partial => 'shared/searchbar'
+
+.row
+	.title_bar
+		.col-xs-4.col-md-3.head
+			= image_tag "tete.png"
+			%h5= @cook.name
+		.col-xs-4.col-md-6.title
+			%h2= @recipe.title
 			- if user_signed_in? && current_user.id == @recipe.user_id
-				= link_to "Edit", edit_recipe_path, class: 'btn btn_default'
-				= link_to "Delete", recipe_path, method: :delete, data: {confirm: "Are you sure ?"} , class: 'btn btn-danger'
+				= link_to "Edit", edit_recipe_path
+				= link_to "Delete", recipe_path, method: :delete, data: {confirm: "Are you sure ?"}
+			= @nb_votes.to_s + " votes"	
+			- @recipe.stars.times do 
+				= image_tag "icons/star.png"
+		.col-xs-4.col-md-3.icons
+			= image_tag "icons/recipes/email.png"
+			= image_tag "icons/recipes/print.png"
+			= image_tag "icons/recipes/add_book.png"
+			= image_tag "icons/recipes/remove_book.png"
+
+.row
+	.col-xs-12.col-sm-6.block_left
+		.image_wrapper
+			=image_tag @recipe.image.url(:thumb)
+		%h5= @recipe.description
+		.col-xs-6.ingredients
+			%h5 Ingrédients (4 pers)
+			%h5 liste des ingrédients
+		.col-xs-6.material
+			%h5 Matériel nécessaire
+			%h5 liste des matériels
+	.col-xs-12.col-sm-6.blocl_right
+		%h3 Recette
+		= image_tag "icons/time.png"
+		%h5= editable @recipe, :duration, value: @recipe.duration.to_s
+		%h5=" min"
+		%h2= editable @recipe, :dish_type
+		#directions.directions
+			= render :partial => 'shared/directions', directions: @directions, rank_list: @rank_list
+		
+		= link_to("Ajouter une étape", directions_path(direction:{"step"=>"à compléter", "recipe_id"=>@recipe.id}), method: :post, remote: true, :class => 'add_direction')
+
+:javascript
+	$('.editable').editable()
+
 

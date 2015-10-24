@@ -2,23 +2,27 @@ class RecipesController < ApplicationController
 before_action :find_recipe, only: [:show, :update, :edit, :destroy]
 before_action :authenticate_user!, except: [:index, :show]
 
+
 	def index
-		if params[:user_id].blank?
+		if params[:id].blank?
 			@recipes = Recipe.all.order("created_at DESC")
 		else
-			@cook = User.find_by(id: params[:user_id])
-			@recipes = Recipe.where(user_id: params[:user_id]).order("created_at DESC")
-
-			unless params[:dishtype].blank?
-				@dishtype_id = Dishtype.find_by(name: params[:dishtype]).id
-				@recipes = @recipes.where(dishtype_id: @dishtype_id).order("created_at DESC")
-			end
+			@cook = Cook.find_by(id: params[:id])
+			@recipes = Recipe.where(cook_id: params[:id]).order("created_at DESC")
 		end
 	end
 
 	def show
-		@cook = Cook.find_by(user_id: @recipe.user_id)
-		@dishtype = Dishtype.find_by(id: @recipe.dishtype_id)
+		@cook = Cook.find_by(id: @recipe.cook_id)
+		#max_rank = Direction.where(recipe_id: @recipe.id).count
+		@directions = Direction.where(recipe_id: @recipe.id).order("rank ASC")
+		get_rank_list()
+		#@rank_list = []
+		#@directions.count.times do |n|
+			#@rank_list << {value: (n+1), text: (n+1).to_s}
+		#end
+		#@recipe = Recipe.find_by(id: params[])
+		#@dishtype = Dishtype.find_by(id: @recipe.dishtype_id)
 	end
 
 	def new 
@@ -39,11 +43,23 @@ before_action :authenticate_user!, except: [:index, :show]
 	end
 
 	def update
-		if @recipe.update(recipe_params)
-			redirect_to @recipe
-		else
-			render 'edit'
-		end
+		respond_to do |format|
+		#recipe_params = {params.name => params.value}
+	      if @recipe.update(recipe_params)
+	        format.html { redirect_to @recipe, notice: 'Recipe was successfully updated.' }
+	        format.json { head :no_content }
+	      else
+	        format.html { render action: 'edit' }
+	        format.json { render json: @recipe.errors, status: :unprocessable_entity }
+	      end
+	    end
+
+
+		#if @recipe.update(recipe_params)
+		#	redirect_to @recipe
+		#else
+		#	render 'edit'
+		#end
 	end
 
 	def destroy
@@ -54,7 +70,7 @@ before_action :authenticate_user!, except: [:index, :show]
 	private 
 
 	def recipe_params
-		params.require(:recipe).permit(	:title, :description, :image, :dishtype_id,
+		params.require(:recipe).permit(	:title, :description, :image, :dish_type,
 										ingredients_attributes: [:id, :name, :_destroy],
 										directions_attributes: [:id, :step, :_destroy]
 										)
@@ -63,4 +79,5 @@ before_action :authenticate_user!, except: [:index, :show]
 	def find_recipe
 		@recipe = Recipe.find(params[:id])
 	end
+
 end

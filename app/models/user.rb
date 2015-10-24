@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :recipes, dependent: :destroy
+  #à voir comment udater le comment sans id si destroy user
+  has_many :comments, dependent: :destroy
   has_one :cook, dependent: :destroy
 
   has_attached_file :image, styles: { thumb: "200x200#" }

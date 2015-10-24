@@ -20,15 +20,11 @@
 	%nav.navbar.navbar-default
 		.container
 			%ul.nav.navbar-nav.navbar-left
-				%li= link_to "Comment ça marche", root_path
-			.navbar-brand= link_to "Cook@dom", root_path
+				.navbar-brand= link_to "Cook@dom", root_path
 			- if user_signed_in?
 				%ul.nav.navbar-nav.navbar-right
 					%li= link_to current_user.pseudo, users_path
-					- if Cook.where(user_id: current_user.id).present?
-						%li= link_to "Nouvelle recette", new_recipe_path
-					- else
-						%li= link_to "Activer mon cuisinier", new_cook_path
+					%li= link_to "mes recettes", root_path
 					%li= link_to "Sign Out", destroy_user_session_path, method: :delete
 			- else
 				%ul.nav.navbar-nav.navbar-right
@@ -42,7 +38,11 @@
 	%nav.navbar.navbar-default
 		.container
 			%ul.nav.navbar-nav.navbar-left
-				%li= link_to "footer", root_path
+				%h3='Retrouvez nous sur :'
+				%h3= "Contact"
+				%h3= mail_to("cookadom@gmail.com")
+				%h3= link_to 'Nos CGV', root_path
+				%h3= "© Cook@dom 2015"
 
 :javascript
 	$(document).ready(function(){
@@ -53,5 +53,4 @@
 		}, 3500);
 		geocomp("address");
 	});
-
 

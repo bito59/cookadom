@@ -11,7 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150805204404) do
+ActiveRecord::Schema.define(version: 20151011125907) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "comments", force: :cascade do |t|
+    t.string   "name"
+    t.text     "description"
+    t.integer  "star"
+    t.integer  "user_id"
+    t.integer  "cook_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
 
   create_table "cooks", force: :cascade do |t|
     t.integer  "user_id"
@@ -25,16 +38,17 @@ ActiveRecord::Schema.define(version: 20150805204404) do
     t.float    "longitude"
   end
 
-  add_index "cooks", ["user_id"], name: "index_cooks_on_user_id"
+  add_index "cooks", ["user_id"], name: "index_cooks_on_user_id", using: :btree
 
   create_table "directions", force: :cascade do |t|
     t.text     "step"
     t.integer  "recipe_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "rank"
   end
 
-  add_index "directions", ["recipe_id"], name: "index_directions_on_recipe_id"
+  add_index "directions", ["recipe_id"], name: "index_directions_on_recipe_id", using: :btree
 
   create_table "dishtypes", force: :cascade do |t|
     t.string   "name"
@@ -49,7 +63,7 @@ ActiveRecord::Schema.define(version: 20150805204404) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "ingredients", ["recipe_id"], name: "index_ingredients_on_recipe_id"
+  add_index "ingredients", ["recipe_id"], name: "index_ingredients_on_recipe_id", using: :btree
 
   create_table "recipes", force: :cascade do |t|
     t.string   "title"
@@ -62,6 +76,10 @@ ActiveRecord::Schema.define(version: 20150805204404) do
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
     t.integer  "dishtype_id"
+    t.integer  "cook_id"
+    t.integer  "duration"
+    t.string   "dish_type"
+    t.integer  "stars"
   end
 
   create_table "users", force: :cascade do |t|
@@ -87,7 +105,9 @@ ActiveRecord::Schema.define(version: 20150805204404) do
     t.string   "gender"
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "directions", "recipes"
+  add_foreign_key "ingredients", "recipes"
 end

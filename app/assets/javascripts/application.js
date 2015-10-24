@@ -11,16 +11,23 @@
 // about supported directives.
 //
 //= require jquery
-//= require jquery.turbolinks
 //= require jquery_ujs
+//= require turbolinks
+//= require bootstrap-sprockets
 
-//= require geocomplete
+//= require bootstrap3-editable/bootstrap-editable
+
+// require editable/bootstrap-editable
+//= require editable/rails
+
+// require bootstrap3-editable/bootstrap-editable-inline
+
+// require bootstrap3-editable/bootstrap-editable
 
 //= require_tree .
 
-//= require bootstrap-sprockets
+//= require jquery.turbolinks
+
+//= require geocomplete
+
 //= require cocoon
-
-//= require scripts
-
-//= require turbolinks

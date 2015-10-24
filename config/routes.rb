@@ -7,8 +7,15 @@ Rails.application.routes.draw do
   #, controllers: { sessions: 'users/sessions' }
 
   resources :users, only: [:index, :destroy]
-  resources :recipes
+  
+  resources :recipes do
+    
+  end
+  resources :directions, :only => [:create, :destroy, :update]
+
   resources :cooks
+  resources :comments
+
 
   	#devise_scope :user do
     #	get "delete_user", :to => "devise/registrations#destroy", :as => :edit_user_registration

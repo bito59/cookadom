@@ -1,30 +1,10 @@
-%h1='Hello ' + current_user.pseudo + '  !!'
+.row
+	- if @cook.present?
+		.col-xs-12.col-sm-6.col-md-3.col-lg-2
+			= render :partial => 'shared/cook_details', cook: @cook
 
-%li=link_to "Modifier mon compte", edit_user_registration_path(@user), class: 'btn btn-info'
-%li=link_to "Supprimer mon compte", edit_user_registration_path(@user), data: { confirm: "Toutes les données de votre compte seront supprimées ! Etes-vous sûr ?" }, method: :delete, class: 'btn btn-danger'
-%br
-%li='email : ' + @user.email
-%li='pseudo : ' + @user.pseudo
-%li='nom : ' + @user.first_name
-%li='prénom : ' + @user.last_name
-%li='gender : ' + @user.gender 
-%br
-
-- if @cook.blank?
-	%li=link_to "Activer mon cookadom", new_cook_path, class: 'btn btn-info'
-- else
-	%br
-	les détails de mon cuisinier :
-	%br
-	%li='nom du cuisinier : ' + @cook.name
-	%li='introduction : ' + @cook.introduction
-	%li='code postal : ' + @cook.postal_code
-	%li='distance de travail : ' + @cook.working_distance + ' km'
-	%li=link_to "Désactiver mon cookadom", cook_path(@cook), method: :delete, data: {confirm: "Votre cuisinier et toutes vos recettes seront supprimées ! Etes-vous sûr ?"}, class: 'btn btn-danger'
-	%li=link_to "Modifier mon cookadom", edit_cook_path(@cook), class: 'btn btn-info'
-	
-	%br
-	%li=link_to "Créer une recette", new_recipe_path, class: 'btn btn-info'
-	=pluralize(@recipes.count, 'recette proposée')
-	- @recipes.each do |recipe|
-		=link_to recipe.title, recipe_path(recipe)
+		.col-xs-12.col-sm-6.col-md-3.col-lg-2
+			= render :partial => 'shared/my_account', user: @user, cook: @cook, recipes: @recipes, book_recipes: @book_recipes
+	- else
+		.col-xs-12
+			= render :partial => 'shared/my_account', user: @user, cook: @cook, recipes: @recipes, book_recipes: @book_recipes

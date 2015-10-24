@@ -1,26 +1,76 @@
-%h1 Bienvenue sur cook@dom !
-%h2 photo sympa
+// Page 1 : search
+#welcome1.row
+	#jingle.jingle
+		%h2 Vivez la découverte entre amis depuis votre cuisine !
+	= image_tag "welcome_font/welcome#{rand(5)}.jpg", class: "font_picture"
+	#search_area.search_area
+		.row
+			.col-sm-2
+				= image_tag "icons/position.png", class: "logo_field"
+			.col-sm-8
+				%h2= text_field_tag :address, 'address', value: '', placeholder: 'Adresse de ma cuisine', class: ''
+			.col-sm-2
+				= image_tag "icons/kitchen.png", class: "logo_field"
 
-= form_tag cooks_path, :method => :get do
-	%p
-		= text_field_tag :address, 'address', value: '', placeholder: 'Lieu du cours de cuisine'
-		= text_field_tag :lat, 'lat', value: '0'
-		= text_field_tag :lng, 'lng', value: '0'
-		= submit_tag "Voir les cuisiniers", :name => nil, class: 'btn btn-info'
+		= form_tag cooks_path, :method => :get do
+			= hidden_field_tag :lat
+			= hidden_field_tag :lng
+			= hidden_field_tag :formatted_address
+			= submit_tag "VOIR LES COOKS", class: 'btn_search_cook'
+
+	#pub.pub
+		%h2 Vous avez un talent culinaire ?
+		=link_to "Devenez cook", new_cook_path, class: 'btn_pub'
 
 
-=link_to "Voir les cuisiniers", cooks_path, class: 'btn btn-info'
+// Page 2 : explication du concept
+#welcome2.row
+	#process
+		%h2 Comment ça marche ?
+		.process_block
+			= image_tag "process/cook.png", class: "logo_process"
+			%h5 Trouvez autour de chez vous le cook qui vous intéresse
+		.process_block
+			= image_tag "process/menu.png", class: "logo_process"
+			%h5 Choisissez la prestation et contactez-le
+		.process_block
+			= image_tag "process/shop.png", class: "logo_process"
+			%h5 Faites les courses ou demandez-les au cook
+		.process_block
+			= image_tag "process/cooking.png", class: "logo_process"
+			%h5 Cuisinez et apprenez avec les conseils du cook
+		.process_block
+			= image_tag "process/party.png", class: "logo_process"
+			%h5 Vivez l'expérience en recevant chez vous !
 
-%h2 icones d'explication du concept
+	#content
+		%h2 Hôtes : recevez différemment chez vous
+		%h5 Organisez un moment convivial de découverte culinaire pour un budget limité
+		= image_tag "welcome_hote.png", class: "welcome_picture"
+		=link_to "chercher un cook", cooks_path, class: 'btn_search_cook'
 
+	#content
+		%h2 Cooks : Partagez votre talent
+		%h5 Proposez des cours à domicile sans contraintes
+		= image_tag "welcome_chef.png", class: "welcome_picture"
+		=link_to "devenir cook", new_cook_path, class: 'btn_become_cook'
 
-- if user_signed_in? && @cook.blank?
-	=link_to "devenir cuisinier", new_cook_path, class: 'btn btn-info'
-- else
-	=link_to "s'inscrire", new_user_registration_path, class: 'btn btn-info'
-	=link_to "S'inscrire et devenir cuisinier", new_user_registration_path, class: 'btn btn-info'
+	#content
+		%h2 Les avantages cookadom
+		.avantage_block
+			= image_tag "avantages/degree.png"
+			%h5 Contrôlez le niveau du cook et sa spécialité
+		.avantage_block
+			= image_tag "avantages/star.png"
+			%h5 Vérifiez les commentaires et avis sur le cook
+		.avantage_block
+			= image_tag "avantages/pay.png"
+			%h5 Payez le cook après la prestation en main propre
+		.avantage_block
+			= image_tag "avantages/calendar.png"
+			%h5 Gérez votre organisation directement avec le cook
+		.avantage_block
+			= image_tag "avantages/book.png"
+			%h5 Retrouvez vos recettes sur le site
 
-- if @cooks.count > 0
-	- @cooks.each do |cook|
-		%li= link_to cook.name, recipes_path(user_id: cook.user_id)
 
