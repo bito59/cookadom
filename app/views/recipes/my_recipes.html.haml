@@ -1,0 +1,11 @@
+= render :partial => 'shared/searchbar'
+
+.row
+
+
+	.col-xs-12.recipes_area
+		.row
+			.title
+				%h1= "Mes recettes"
+		= render :partial => 'recipes_list', recipes: @recipes
+

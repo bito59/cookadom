@@ -4,44 +4,60 @@
 	.title_bar
 		.col-xs-4.col-md-3.head
 			= image_tag "tete.png"
-			%h5= @cook.name
+			%h5= @cook.title
 		.col-xs-4.col-md-6.title
-			%h2= @recipe.title
-			- if user_signed_in? && current_user.id == @recipe.user_id
-				= link_to "Edit", edit_recipe_path
-				= link_to "Delete", recipe_path, method: :delete, data: {confirm: "Are you sure ?"}
-			= @nb_votes.to_s + " votes"	
-			- @recipe.stars.times do 
+			.recipe_title
+				%h2= editable [@cook, @recipe], :title, value: @recipe.title
+			- if user_signed_in? && current_user.id == @cook.user_id
+				= link_to "Supprimer la recette", cook_recipe_path, method: :delete, data: {confirm: "Etes vous sûr de vouloir supprimer cette recette ?"}
+			= pluralize(@nb_votes, 'vote')	
+			- @recipe.stars.to_i.times do 
 				= image_tag "icons/star.png"
 		.col-xs-4.col-md-3.icons
 			= image_tag "icons/recipes/email.png"
 			= image_tag "icons/recipes/print.png"
-			= image_tag "icons/recipes/add_book.png"
-			= image_tag "icons/recipes/remove_book.png"
+			- if user_signed_in? && current_user.id == @cook.user_id
+				#btn_modify
+					= image_tag "icons/recipes/edit_recipe.png"
+			- if user_signed_in? && current_user.id != @cook.user_id
+				#like_recipe_button
+					= render partial: 'like_recipes/like_recipe_button', locals: { recipe: @recipe, nb_liked: @nb_liked }
 
 .row
 	.col-xs-12.col-sm-6.block_left
 		.image_wrapper
-			=image_tag @recipe.image.url(:thumb)
-		%h5= @recipe.description
+			= image_tag "samosas.jpg"
+			=#@recipe.image.url(:thumb)
+		.recipe_description
+			%h5= editable [@cook, @recipe], :description, value: @recipe.description
 		.col-xs-6.ingredients
 			%h5 Ingrédients (4 pers)
 			%h5 liste des ingrédients
 		.col-xs-6.material
 			%h5 Matériel nécessaire
 			%h5 liste des matériels
+
 	.col-xs-12.col-sm-6.blocl_right
 		%h3 Recette
 		= image_tag "icons/time.png"
-		%h5= editable @recipe, :duration, value: @recipe.duration.to_s
-		%h5=" min"
-		%h2= editable @recipe, :dish_type
+		.recipe_duration
+			%h5= editable [@cook, @recipe], :duration, value: @recipe.duration.to_s
+		.dishtype
+			%h2= editable [@cook, @recipe], :dishtype_id, type: "select", title: "Type de plat", value: @recipe.dishtype_id, source: @dishtype_list
+		
 		#directions.directions
 			= render :partial => 'shared/directions', directions: @directions, rank_list: @rank_list
 		
-		= link_to("Ajouter une étape", directions_path(direction:{"step"=>"à compléter", "recipe_id"=>@recipe.id}), method: :post, remote: true, :class => 'add_direction')
+		- if user_signed_in? && current_user.id == @cook.user_id
+			= link_to("Ajouter une étape", directions_path(direction:{"step"=>"à compléter", "recipe_id"=>@recipe.id}), method: :post, remote: true, :class => 'add_direction')
 
 :javascript
-	$('.editable').editable()
+	$(document).ready(function() {
+		$('.editable').editable('disable');
+	});
+	$("#btn_modify").click(function() {
+		$('.editable').editable('toggleDisabled');
+	});
+
 
 

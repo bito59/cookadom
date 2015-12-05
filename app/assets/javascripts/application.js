@@ -27,7 +27,6 @@
 //= require_tree .
 
 //= require jquery.turbolinks
-
 //= require geocomplete
-
 //= require cocoon
+

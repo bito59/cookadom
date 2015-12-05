@@ -1,45 +1,122 @@
 %h1='Mon compte'
-.col-xs-6
-	%li='Votre pseudo (affiché sur le site) : ' + @user.pseudo
-	%li='Votre email (ne sera pas affiché) : ' + @user.email
-	%li='Password : '
-	%li='Password : '
-	=link_to "Supprimer mon compte", edit_user_registration_path(@user), data: { confirm: "Toutes les données de votre compte seront supprimées ! Etes-vous sûr ?" }, method: :delete, class: 'btn btn-danger'
+.row
+	.col-xs-6
+		.row
+			%h5='Votre pseudo (affiché sur le site) : '
+			%h5= editable @user, :pseudo, value: @user.pseudo
+			= image_tag(@user.avatar.url)
+			%h5='Votre email (non affiché sur le site) : ' + @user.email
+			=link_to "Modifier le compte", '', remote: true, class: 'btn btn-info', id: "modif_account"
+			#modif_account_form
+				= form_for current_user, path: registration_path(current_user), method: :put do |f|
+					%h5="Nouvel email"
+					= f.text_field :email, required: true
+					%h5="Nouveau mot de passe"
+					= f.password_field :password, palceholder: "laisser vide si pas de modification", required: false
+					%h5="Nouveau mot de passe (confirmation)"
+					= f.password_field :password_confirmation, palceholder: "laisser vide si pas de modification", required: false
+					%h5="Mot de passe actuel"
+					= f.password_field :current_password, required: true
+					= f.submit "Valider les modifications", class: 'btn btn-primary'
+					= link_to "Annuler", "", remote: true, class: 'btn btn-danger', id: "cancel_account_modif"
+		.row
+			=link_to "Supprimer le compte", user_path(@user), data: { confirm: "Toutes les données de votre compte seront supprimées ! Etes-vous sûr ?" }, method: :delete, class: 'btn btn-danger'
+			#btn_modify
+				= image_tag "icons/edit.png"
 
-.col-xs-6
-	.row
-		.col-xs-6
-			%h4 Mon book de recettes
-		.col-xs-6
-			= pluralize(@book_recipes.count, ' recette')
-			=link_to "Vider", "", class: 'btn btn-danger'
-	.row
-		=link_to "Créer une recette", new_recipe_path, class: 'btn btn-info'
+	.col-xs-6
+		.row
+			.col-xs-6
+				%h4 Mon book de recettes
+				= pluralize(@nb_like, ' recette')
+			.col-xs-6
+				- if @nb_like > 0
+					= link_to "Vider", like_recipe_path, data: { confirm: "Vider votre book ?" }, method: :delete, class: 'btn btn-danger'
+		.row
+			- if @new_cook == false
+				=link_to "Créer une recette", cook_recipes_path(@cook.id), method: :post, class: 'btn btn-info'
+.row
+	- if @new_cook == true
+		%h3='Devenez cook et partagez votre talent !'
+		=link_to "Devenir cook", "", remote: true, class: 'btn btn-info', id: "become_cook"
 
-- if @cook.blank?
-	%h3='Devenez cook et partagez votre talent !'
-	=link_to "Activer mon cookadom", new_cook_path, class: 'btn btn-info'
+		#cook_form
+			= form_for @cook do |f|
+				%h5= "Titre du cook :"
+				= f.text_field :title, required: true
+				%h5= "Gendre :"
+				= f.select :gender, options_for_select(["Homme","Femme"]) 
+				%h5= "Introduction :"
+				= f.text_field :introduction
+				%h5= "Téléphone de contact :"
+				= f.text_field :phone_number
+				%h5= text_field_tag :address, 'address', value: '', placeholder: 'Mon adresse', class: ''
+				%h5= "Distance de travail :"
+				= f.select :working_distance, options_for_select(["5","10","15","20","25","30","35","40","45","50"]) 
+				= f.hidden_field :lat, "data-geo"=>"lat", required: true
+				= f.hidden_field :lng, "data-geo"=>'lng', required: true
+				= f.hidden_field :formatted_address, "data-geo"=>'formatted_address', required: true
+				= f.hidden_field :street_number, "data-geo"=>'street_number'
+				= f.hidden_field :route, "data-geo"=>'route'	
+				= f.hidden_field :locality, "data-geo"=>'locality', required: true
+				= f.text_field :postal_code, readonly: :true, "data-geo"=>'postal_code', required: true
+				= f.hidden_field :administrative_area_level_1, "data-geo"=>'administrative_area_level_1', required: true		
+				= f.hidden_field :country, "data-geo"=>'country', required: true
+				= submit_tag "Activer mon cook", class: 'btn btn-info'
+				= link_to "Annuler", "", remote: true, class: 'btn btn-danger', id: "cancel_cook"
+	- else
+		%h5='Détails de mon cook'
+		%h5='Titre du cook : '
+		%h5= editable @cook, :title, value: @cook.title
+		=link_to "Désactiver mon cook", cook_path(@cook), method: :delete, data: {confirm: "Votre cuisinier et toutes vos recettes seront supprimées ! Etes-vous sûr ?"}, class: 'btn btn-danger'
+		%h5='Sexe : '
+		%h5= editable @cook, :gender, value: @cook.gender 
+		%h5='Introduction : '
+		%h5= editable @cook, :introduction, value: @cook.introduction
+		%h5='Téléphone de contact : '
+		%h5= editable @cook, :phone_number, value: @cook.phone_number
+		- if @cook.verified_phone == true
+			= image_tag "process/icons/ok.png", class: "logo_process"
+			%h5 Numéro vérifié
+		%h5='Localisation : '
+		%h5= @cook.formatted_address
+		%h5='Distance de travail : '
+		%h5= editable @cook, :working_distance, value: @cook.working_distance
+		%h5=' km'
 
-- else
-	%h1='Mon cook'
-	%li='nom du cuisinier : ' + @cook.name
-	%li='nom : ' + @user.first_name
-	%li='prénom : ' + @user.last_name
-	%li='gender : ' + @user.gender 
-	%li='introduction : ' + @cook.introduction
-	%li='adresse : ' + @cook.postal_code
-	%li='distance de travail : ' + @cook.working_distance + ' km'
+		=link_to pluralize(@recipes.count, 'recette proposée'), cook_recipes_path(@cook)
+		- @recipes.each do |recipe|
+			=link_to recipe.title, [@cook, recipe]
 
-	=link_to "Désactiver mon cookadom", cook_path(@cook), method: :delete, data: {confirm: "Votre cuisinier et toutes vos recettes seront supprimées ! Etes-vous sûr ?"}, class: 'btn btn-danger'
-	=link_to "Modifier mon cookadom", edit_cook_path(@cook), class: 'btn btn-info'
-
-	=pluralize(@recipes.count, 'recette proposée')
-	- @recipes.each do |recipe|
-		=link_to recipe.title, recipe_path(recipe)
-
-
-%li=link_to "Modifier mon compte", edit_user_registration_path(@user), class: 'btn btn-info'
-
+	= form_for(@user, multipart: true) do |f|
+		= f.label :avatar
+		= f.file_field :avatar
+		= f.submit 'Poster la tof'
 
 :javascript
-	$('.editable').editable()
+	$(document).ready(function() {
+		$('.editable').editable('disable');
+	 	$('#cook_form').hide();
+	 	$('#modif_account_form').hide();
+	 	$('#modif_account').hide();
+	});
+	$("#btn_modify").click(function() {
+		$('.editable').editable('toggleDisabled');
+	});
+	$('#modif_account').click(function() {
+		$('#modif_account').hide();
+		$('#modif_account_form').show();
+	});
+	$('#cancel_account_modif').click(function() {
+		$('#modif_account_form').hide();
+		$('#modif_account').show();
+	});	
+	$('#become_cook').click(function() {
+		$('#cook_form').show();
+		$('#become_cook').hide();
+	});
+	$('#cancel_cook').click(function() {
+		$('#cook_form').hide();
+		$('#become_cook').show();
+	});
+	

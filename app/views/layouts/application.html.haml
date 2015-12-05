@@ -4,7 +4,12 @@
 	%title Cook@dom
 	= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
 	= javascript_include_tag 'application', 'data-turbolinks-track' => true
+	
 	= javascript_include_tag 'http://maps.googleapis.com/maps/api/js?sensor=false&libraries=places'
+
+	= stylesheet_link_tag "jquery.fullPage.css"
+	= javascript_include_tag "jquery.fullPage.js"
+
 	= csrf_meta_tags
 
 - if notice
@@ -23,13 +28,14 @@
 				.navbar-brand= link_to "Cook@dom", root_path
 			- if user_signed_in?
 				%ul.nav.navbar-nav.navbar-right
-					%li= link_to current_user.pseudo, users_path
-					%li= link_to "mes recettes", root_path
-					%li= link_to "Sign Out", destroy_user_session_path, method: :delete
+					= link_to image_tag("icons/header/user.png", title: ("chez " + current_user.pseudo), :size => "50x50"), user_path(current_user)
+					= link_to image_tag("icons/header/recipe book.png", title: "mes recettes", :size => "50x50"), myrecipes_path()
+					= link_to image_tag("icons/header/exit.png", title: "Sign Out", :size => "50x50"), destroy_user_session_path, method: :delete
+
 			- else
 				%ul.nav.navbar-nav.navbar-right
-					%li= link_to "Sign Up", new_user_registration_path
-					%li= link_to "Sign In", new_user_session_path
+					%li= link_to "Créer mon compte", new_user_registration_path
+					%li= link_to "Connection", new_user_session_path
 
 	.container
 		= yield
@@ -53,4 +59,5 @@
 		}, 3500);
 		geocomp("address");
 	});
+
 

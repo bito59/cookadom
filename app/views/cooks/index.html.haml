@@ -2,7 +2,7 @@
 
 .row
 	.title
-		%h1= "Les cooks " + @message
+		%h1= "Les cooks " + @proximite
 .row
 	.col-xs-6.col-md-8
 		- if @adress.present?
@@ -23,27 +23,28 @@
 
 - @cooks.each_slice(4) do |slice|
 	.row
-		- @cooks.each do |name, object|
+		- @cooks.each do |cook|
 			.col-xs-6.col-md-3
 				.cook
-					- if object[:in_range] == "OK"
+					- if cook.in_range == "OK"
 						= image_tag "icons/ok.png" 
-						%h6= "Distance : " + object[:distance] + " km"
-					- elsif object[:in_range] == "QUESTION"
+						%h6= "Distance : " + cook.distance + " km"
+					- elsif cook.in_range == "QUESTION"
 						= image_tag "icons/question.png" 
-						%h6= "Distance : " + object[:distance] + " km"
+						%h6= "Distance : " + cook.distance + " km"
 
 					= image_tag "tete.png"
-					%h5= link_to object[:details][:name], recipes_path(user_id: object[:details][:user_id])
+					%h5= link_to cook.title, cook_recipes_path(cook)
 					%h5 specialités
 					%h5 20€ / pers
-					= link_to recipes_path(id: object[:details][:id]) do
-						%h5= pluralize(object[:nb_recipes].to_s, 'recette')
-					= link_to comments_path(id: object[:details][:id]) do
-						%h5= "(" + object[:nb_avis].to_s + " avis)"
-					= "Note : " + object[:nb_stars].round(1).to_s	
-					- object[:nb_stars].round.times do 
-						= image_tag "icons/star.png"
+					= link_to cook_recipes_path(cook) do
+						%h5= pluralize(cook.nb_recipes.to_s, 'recette')
+					- if cook.nb_avis > 0 
+						= link_to comments_path(id: cook.id) do
+							%h5= "(" + cook.nb_avis.to_s + " avis)"
+						= "Note : " + cook.nb_stars.round(1).to_s	
+						- cook.nb_stars.round.times do 
+							= image_tag "icons/star.png"
 
 
 

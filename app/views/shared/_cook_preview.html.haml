@@ -1,0 +1,23 @@
+
+= image_tag(@user.avatar.url)
+= link_to @cook.title, cook_recipes_path(@cook)
+= @cook.nb_stars
+= @cook.nb_avis.to_s + ' avis'
+#btn_contact
+	= link_to 'contact', ''
+= @cook.locality + ' + ' + @cook.working_distance + ' km'
+= 'Langues : ' + @cook.nb_languages.to_s
+= @cook.price.to_s + ' / pers'
+= @cook.introduction
+= @cook.phone_number
+= @cook.verified_phone
+= @cook.user.email
+
+
+:javascript
+	$(document).ready(function() {
+	 	$('#contact').hide();
+	});
+	$("#btn_contact").click(function() {
+		$('#contact').show();
+	});

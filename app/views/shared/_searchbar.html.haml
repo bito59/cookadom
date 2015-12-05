@@ -1,11 +1,11 @@
 #search_bar.row
 	.col-xs-4.col-sm-3.col-md-2
 		= form_tag cooks_path, :method => :get do
-			= hidden_field_tag :lat
-			= hidden_field_tag :lng
-			= hidden_field_tag :formatted_address
+			= hidden_field_tag(:lat, "no", "data-geo"=>"lat", required: true)
+			= hidden_field_tag(:lng, "no", "data-geo"=>"lng", required: true)
+			= hidden_field_tag(:formatted_address, "no", "data-geo"=>"formatted_address", required: true)
 			= submit_tag "VOIR LES COOKS", :name => nil, class: 'btn_search_cook_green'
-	
+
 	.col-xs-4.col-sm-6.col-md-8
 		.row
 			.col-xs-2
@@ -16,10 +16,10 @@
 				= image_tag "icons/kitchen.png", class: "logo_field"
 
 	.col-xs-4.col-sm-3.col-md-2
-		= form_tag recipes_path, :method => :get do
-			= hidden_field_tag :lat
-			= hidden_field_tag :lng
-			= hidden_field_tag :formatted_address
+		= form_tag recipes_path do
+			= hidden_field_tag(:lat, "no", "data-geo"=>"lat", required: true)
+			= hidden_field_tag(:lng, "no", "data-geo"=>"lng", required: true)
+			= hidden_field_tag(:formatted_address, "no", "data-geo"=>"formatted_address", required: true)
 			= submit_tag "VOIR LES RECETTES", :name => nil, class: 'btn_search_recipe_green'
 
 

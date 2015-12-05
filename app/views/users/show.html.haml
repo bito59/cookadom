@@ -1,0 +1,12 @@
+.row
+	- if @user.present?
+		- if @new_cook == true
+			= render :partial => 'shared/my_account', user: @user, cook: @cook, recipes: @recipes, book_recipes: @book_recipes
+		- else
+			.col-xs-12.col-sm-6
+				= render :partial => 'shared/cook_preview', cook: @cook
+			.col-xs-12.col-sm-6
+				= render :partial => 'shared/my_account', user: @user, cook: @cook, recipes: @recipes, book_recipes: @book_recipes
+	- else
+		%h1 Créez votre compte cook@dom
+		= render :partial => 'shared/new_account'

@@ -1,32 +1,21 @@
 Rails.application.routes.draw do
 
-  get 'welcome/index'
-
   devise_for :users 
-  #controllers: { registrations: "registrations" }
-  #, controllers: { sessions: 'users/sessions' }
 
-  resources :users, only: [:index, :destroy]
-  
-  resources :recipes do
-    
-  end
-  resources :directions, :only => [:create, :destroy, :update]
-
-  resources :cooks
   resources :comments
+  resources :users, only: [:index, :show, :destroy, :update] 
+  resources :directions, only: [:create, :destroy, :update]
+  resources :cooks do 
+    resources :recipes
+  end
+  resources :like_recipes
 
+  root "welcome#index"
+  #get 'welcome/index'
 
-  	#devise_scope :user do
-    #	get "delete_user", :to => "devise/registrations#destroy", :as => :edit_user_registration
-	#end
-
-	#as :user do
-	#	get 'users', :to => 'users#show', as: :user_root
-		#get 'user', :to => 'users#destroy', :via => :delete, as: :user
-#	end
-	#match 'users/:id' => 'users#destroy', :via => :delete, :as => :user
-
-	root "welcome#index"
+  match 'add_like_recipe', to: 'like_recipes#like_recipe', via: :post
+  match 'unlike_recipe', to: 'like_recipes#unlike_recipe', via: :delete
+  match 'recipes', to: 'recipes#browse_recipes', via: :post
+  match 'myrecipes', to: 'recipes#my_recipes', via: :get
 
 end

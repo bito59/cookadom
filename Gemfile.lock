@@ -40,6 +40,11 @@ GEM
     autoprefixer-rails (6.0.3)
       execjs
       json
+    aws-sdk (1.66.0)
+      aws-sdk-v1 (= 1.66.0)
+    aws-sdk-v1 (1.66.0)
+      json (~> 1.4)
+      nokogiri (>= 1.4.4)
     bcrypt (3.1.10)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
@@ -74,6 +79,8 @@ GEM
       warden (~> 1.2.3)
     erubis (2.7.0)
     execjs (2.5.2)
+    figaro (1.1.1)
+      thor (~> 0.14)
     geocoder (1.2.9)
     geocomplete_rails (1.6.5)
       railties (>= 3.1)
@@ -187,12 +194,14 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  aws-sdk (< 2.0)
   bootstrap-sass (~> 3.3.5)
   bootstrap-x-editable-rails
   byebug
   cocoon (~> 1.2.6)
   coffee-rails (~> 4.1.0)
   devise (~> 3.5.2)
+  figaro
   geocoder
   geocomplete_rails
   haml (~> 4.0.6)
@@ -204,7 +213,7 @@ DEPENDENCIES
   rails (= 4.2.0)
   sass-rails (>= 3.2)
   sdoc (~> 0.4.0)
-  simple_form (~> 3.1.0)
+  simple_form
   spring
   sprockets-rails
   turbolinks

@@ -4,60 +4,25 @@ before_action :find_cook, only: [:update, :edit, :destroy]
 before_action :authenticate_user!, except: [:index]
 
 	def index
-		@cooks = Hash.new
-		if params[:formatted_address].present?
-			@adress = params[:formatted_address]
-			@message = "à proximité"
-			coordinates = [params[:lat], params[:lng]]
-			Cook.all.each do |cook|
-				dist = cook.distance_from(coordinates).round(1).to_s
-				nb_recipes = Recipe.where(:cook_id == cook.id).count
-				nb_avis = Comment.where(:cook_id == cook.id).count
-				nb_stars = Comment.where(:cook_id == cook.id).average(:star)
-				if cook.distance_from(coordinates).to_f < cook.working_distance.to_f + 20
-					@cooks[cook.name] = {details: cook, distance: dist, nb_recipes: nb_recipes, nb_avis: nb_avis, nb_stars: nb_stars}
-					if cook.distance_from(coordinates) < cook.working_distance.to_f
-						@cooks[cook.name][:in_range] = "OK"
-					else
-						@cooks[cook.name][:in_range] = "QUESTION"
-					end
-				end
-			end
-			if @cooks.blank?
-				message = "Aucun cook n'a été trouvé autour de cette addresse..."
-			else
-				message = pluralize(@cooks.count, "cook trouvé") + " autour de cette adresse..."
-			end
+		if params[:lat] == "no"
+			redirect_to cooks_path
 		else
-  			#@cooks = Cook.order("RANDOM()").first(3)
-  			@adress = nil
-			@message = ""
-			Cook.all.each do |cook|
-				nb_recipes = Recipe.where(:user_id == cook.user_id).count
-				nb_avis = Comment.where(:cook_id == cook.id).count
-				nb_stars = Comment.where(:cook_id == cook.id).average(:star)
-				@cooks[cook.name] = {details: cook, distance: "", nb_recipes: nb_recipes, nb_avis: nb_avis, nb_stars: nb_stars}
-				@cooks[cook.name][:in_range] = ""
-			end
-			if @cooks.blank?
-				message = "Aucun cook dans la BDD : initialisation nécessaire"
+			if params[:lat].nil?
+				show_all
 			else
-				message = pluralize(@cooks.count, "cook trouvé...")
+				search_cooks([params[:lat], params[:lng]])
 			end
+			message
+			flash.now[:notice] = @message
 		end
-		flash.now[:notice] = message
-	end
-
-	def new
-		@cook = current_user.build_cook
 	end
 
 	def create
 		@cook = current_user.build_cook(cook_params)
 		if @cook.save
-			redirect_to users_path, notice: "Le cuisinier a bien été crée !"
+			redirect_to user_path(current_user), notice: "Le cuisinier a bien été crée !"
 		else
-			render 'new'
+			redirect_to user_path(current_user), notice: "Impossible de créer le cook"
 		end
 	end
 
@@ -65,27 +30,57 @@ before_action :authenticate_user!, except: [:index]
 	end
 
 	def update
-		if @cook.update(cook_params)
-			redirect_to users_path, notice: "Le cuisinier a bien été updaté !"
-		else
-			render 'edit'
-		end
+		respond_to do |format|
+	      if @cook.update(cook_params)
+	        format.json { head :no_content }
+	        format.js { render :layout => false, directions: @directions, rank_list: @rank_list }
+	      else
+	        format.json { render json: @cook.errors, status: :unprocessable_entity }
+	      end
+	    end
 	end
 
 	def destroy
-		Recipe.where(user_id: @cook.user_id).destroy_all
 		@cook.destroy
-		redirect_to users_path, notice: 'Le cuisinier a bien été détruit avec les recettes...'
+		redirect_to user_path(current_user), notice: 'Le cuisinier a bien été supprimé avec les recettes...'
 	end
 
 	private
+
+	def cook_params
+		params.require(:cook).permit(:title, :lat, :lng, :phone_number,
+			:formatted_address, :street_number, :route, :locality, 
+			:postal_code, :administrative_area_level_1, :country,
+			:working_distance, :introduction, :gender, 
+			:language1, :language2, 
+			:language3)
+	end
 
 	def find_cook
 		@cook = Cook.find(params[:id])
 	end
 
-	def cook_params
-		params.require(:cook).permit(:name, :postal_code, :working_distance, :introduction)
+	def show_all
+		@adress = nil
+		@proximite = ""
+		@cooks = Cook.all
+		@cooks.each do |cook|
+			cook.rating
+		end
+	end
+
+	def message
+		if params[:lat].nil? && @cooks.empty?
+			@message = "Aucun cook dans la BDD : initialisation nécessaire"
+		elsif params[:lat].nil?
+			@message = pluralize(@cooks.count, "cook") + " trouvé".pluralize(@cooks.count)
+			@cooks = @cooks.sort_by { |v| v.nb_recipes }.reverse
+		elsif @cooks.empty?
+	      	@message = "Aucun cook n'a été trouvé autour de cette addresse..."
+	    elsif
+			@message = pluralize(@cooks.count, "cook") + " trouvé".pluralize(@cooks.count) + " autour de cette adresse..."
+			@cooks = @cooks.sort_by { |v| v.distance }
+	    end
 	end
 
 end

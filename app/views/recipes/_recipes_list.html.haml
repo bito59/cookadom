@@ -1,0 +1,40 @@
+.row
+	.col-xs-6.col-md-8
+		- if @adress.present?
+			.adress_area
+				%h4=@adress
+				= link_to cooks_path do
+					= image_tag "icons/cross.png", class: "logo_field"
+	.col-xs-6.col-md-4
+		.row
+			.col-xs-3	
+				%h4= "trier par :"
+			.col-xs-3	
+				%h4=link_to "note", id: "sort_note"
+			.col-xs-3	
+				%h4=link_to "type de plat", id: "sort_dishtype"
+			.col-xs-3	
+				%h4=link_to "durée", id: "sort_duration"
+#recipe_results
+	- @recipes.each_slice(4) do |slice|
+		.row
+			- @recipes.each do |recipe|
+				.col-md-4
+					.recipe
+						=link_to cook_recipe_path(recipe.cook.id, recipe) do
+							%h2= recipe.title
+							= @nb_votes.to_s + " votes"	
+							- recipe.stars.to_i.times do 
+								= image_tag "icons/star.png"
+							.image_wrapper
+								=image_tag recipe.image.url(:thumb)
+							%h5= recipe.intro
+							%h5= recipe.duration.to_s + " min"
+							%h5= recipe.dishtype_id
+
+
+:javascript
+	$('#sort_note').click(function() {
+		$('#modif_account').hide();
+		$('#modif_account_form').show();
+	});

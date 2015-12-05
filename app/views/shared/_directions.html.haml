@@ -1,11 +1,10 @@
 
 - @directions.each do |direction|
 	.direction{:id => "direction_#{direction.id}"}
-		%h5= direction.id
 		%h5= editable direction, :rank, type: "select", title: "Rang", value: direction.rank, source: @rank_list
 		%h5= editable direction, :step, value: direction.step
 		= link_to direction_path(direction), method: :delete, :remote => true, :class => 'delete_direction' do
 			= image_tag "icons/cross.png", class: "logo_field"
 
 :javascript
-	$('.editable').editable()
+	$('.editable').editable('disable');

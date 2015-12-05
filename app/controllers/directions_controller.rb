@@ -1,6 +1,6 @@
 class DirectionsController < ApplicationController
 
-before_action :find_direction, only: [:update, :edit, :destroy]
+before_action :find_direction, only: [:update, :destroy]
 
 	def create
 	    rank = Direction.where(recipe_id: direction_params[:recipe_id]).count + 1
@@ -16,14 +16,10 @@ before_action :find_direction, only: [:update, :edit, :destroy]
 	end
 
 	def update
-		#rank = Direction.where(recipe_id: direction_params[recipe_id]).count + 1
-		#direction_params.merge(rank: rank)
 		respond_to do |format|
 	      if @direction.update(direction_params)
-	        #format.html { redirect_to @recipe, notice: 'Recipe was successfully updated.' }
 	        format.json { head :no_content }
 	      else
-	        #format.html { render action: 'edit' }
 	        format.json { render json: @direction.errors, status: :unprocessable_entity }
 	      end
 	    end

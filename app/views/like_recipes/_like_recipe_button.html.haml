@@ -1,0 +1,6 @@
+- if current_user.like_recipe?(recipe)
+	= link_to image_tag("icons/recipes/remove_book.png"), unlike_recipe_path(recipe_id: recipe.id), remote: true, method: :delete
+	= @nb_liked
+- else
+	= link_to image_tag("icons/recipes/add_book.png"), add_like_recipe_path(id: recipe.id), remote: true, method: :post
+	= @nb_liked

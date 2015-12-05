@@ -28,3 +28,76 @@ $('.delete_direction').bind('ajax:success', function() {
 	//$(this).fadeOut();
 	$(this).closest('div').remove();
 }); 
+
+devise create user
+		<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+		  <%= f.error_notification %>
+
+		  <div class="form-inputs">
+		    <%= f.input :email, required: true, autofocus: true, input_html: { class: 'form-control' } %>
+		    <%= f.text_field :pseudo, required: true %>
+		    <%= f.input :password, required: true, input_html: { class: 'form-control' }, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length) %>
+		    <%= f.input :password_confirmation, required: true, input_html: { class: 'form-control' } %>
+		  </div>
+
+		  <div class="form-actions">
+		    <%= f.button :submit, "Sign up", class: "btn btn-primary" %>
+		  </div>
+		<% end %>
+
+		<%= render "devise/shared/links" %>
+
+				respond_to do |format|
+	      if @user.update(user_params)
+	      	format.html { redirect_to "", notice: 'Votre compte a bien été modifié.' }
+	        format.json { head :no_content }
+	      else
+	      	format.html { redirect_to "", notice: 'Problème dans la modification !' }
+	        format.json { render json: @user.errors, status: :unprocessable_entity }
+	      end
+	    end
+
+
+	    if cook.distance_from(coordinates).to_f < cook.working_distance.to_f + 10
+				@cooks[cook.title] = {details: cook, distance: dist, nb_recipes: nb_recipes, nb_avis: nb_avis, nb_stars: nb_stars}
+				if cook.distance_from(coordinates) < cook.working_distance.to_f
+					@cooks[cook.title][:in_range] = "OK"
+				else
+					@cooks[cook.title][:in_range] = "QUESTION"
+				end
+			end
+
+
+
+def search_recipes(coordinates)
+		search_cooks(coordinates)	
+		Cook.all.each do |cook|
+			if cook.distance_from(coordinates).to_f < cook.working_distance.to_f + 10
+				dist = cook.distance_from(coordinates).round(1).to_s
+				Recipe.where(cook_id: cook.id).each do |recipe|
+					recipe.dist = dist
+					if cook.distance_from(coordinates) < cook.working_distance.to_f
+						recipe.in_range = "OK"
+					else
+						recipe.in_range = "QUESTION"
+					end
+					@recipes.push recipe
+					#{puts recipe.to_yaml
+				end
+			end
+		end
+		if @recipes.blank?
+			@message = "Aucune recette n'a été trouvée autour de cette addresse..."
+		else
+			@recipes.sort_by { |v| v[:cook_id] }.to_h
+			@message = @recipes.count.to_s + " recette".pluralize(@recipes.count) + " trouvée".pluralize(@recipes.count) + " autour de cette adresse..."
+		end
+	end	
+
+	
+	$("#btn_save").click(function(e) {
+		$('#btn_modify').show();
+		$('#btn_save').hide();
+	});
+	
+	
