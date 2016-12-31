@@ -14,12 +14,12 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # Amazon Web Services - S3
-  config.paperclip_defaults = {
-    :storage => :s3,
-    :s3_credentials => {
-      :bucket => 'cookadom',
-      :s3_credentials => "#{Rails.root}/config/aws.yml",
-    }
-  }
+  #config.paperclip_defaults = {
+   # :storage => :s3,
+    #:s3_credentials => {
+    #  :bucket => 'cookadom',
+    #  :s3_credentials => "#{Rails.root}/config/aws.yml",
+    #}
+ # }
 
 end

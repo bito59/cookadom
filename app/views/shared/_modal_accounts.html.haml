@@ -1,0 +1,53 @@
+#account.modal						
+	.modal-content.no-hide
+		#connect-account
+			.modal-header
+				%h3.modal-title="Log in"
+				%span.close= 'X'
+			.modal-body
+				= form_tag session_path(:user), html: { autocomplete: "off" }, class: 'form-center' do
+					= text_field_tag 'user[email]', nil, required: 'true', placeholder: 'Email'
+					= password_field_tag 'user[password]', nil, required: 'true', placeholder: 'Password'
+					= link_to "Mot de passe oublié ?", new_password_path(:user), class: "forgot"
+					%button.btn-account Sign in
+			.link-new-user
+				%h3= "Pas encore inscrit ?"
+				= navbar_text 'Créer mon compte', id: "create_account", class: "register-link"
+		#create-account
+			.modal-header
+				%h3.modal-title="Nouveau compte"
+				%span.close= 'X'
+			.modal-body
+				= form_tag registration_path(:user), html: { autocomplete: "off" }, class: 'form-center' do
+					= text_field_tag 'user[email]', nil, required: true, placeholder: 'Email'
+					= text_field_tag 'user[pseudo]', nil, required: true, placeholder: 'Pseudo'
+					= password_field_tag 'user[password]', nil, required: true, placeholder: 'Password'
+					= password_field_tag 'user[password_confirmation]', nil, required: true, placeholder: 'Confirm password'
+					%button.btn-account Créer le compte
+			.link-new-user
+				%h3= "Déjà inscrit ?"
+				= navbar_text 'log in', id: "connect_account", class: "register-link"
+
+:javascript
+
+	// When the user clicks on <span> (x), close the modal
+	$('#close').click(function() {
+		$('#account').fadeOut("slow");
+	});
+
+	// When the user clicks anywhere outside of the modal, close it
+	$(window).on("click", function(event) {
+		if ((!$(event.target).parents('.no-hide').length || $(event.target).is(".close")) && !$(event.target).is(".no-hide")) {
+			$('#account').fadeOut("slow");
+		}
+	});
+
+	$('#create_account').click(function() {
+		$('#connect-account').hide();
+		$('#create-account').show();
+	});
+
+	$('#connect_account').click(function() {
+		$('#create-account').hide();
+		$('#connect-account').show();
+	});

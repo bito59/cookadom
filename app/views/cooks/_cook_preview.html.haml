@@ -1,5 +1,5 @@
 
-= image_tag(@user.avatar.url)
+= image_tag(@cook.user.avatar.url)
 = link_to @cook.title, cook_recipes_path(@cook)
 = @cook.nb_stars
 = @cook.nb_avis.to_s + ' avis'

@@ -8,10 +8,6 @@ class RecipesController < ApplicationController
 		@recipes = @cook.recipes.order("created_at DESC")
 	end
 
-	def my_recipes
-		@recipes = current_user.recipes
-	end
-
 	def browse_recipes
 		if params[:lat] == "no"
 			@recipes = Recipe.all.order("created_at DESC")
@@ -82,7 +78,7 @@ class RecipesController < ApplicationController
 	end
 
 	def find_cook
-		@cook = Cook.find_by_id(params[:cook_id])
+		@cook = Cook.friendly.find(params[:cook_id])
 	end
 
 	def search_recipes(coordinates)

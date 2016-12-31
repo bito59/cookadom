@@ -1,0 +1,27 @@
+%h3='Devenez cook et partagez votre talent !'
+=link_to "Devenir cook", "", remote: true, class: 'btn btn-info', id: "become_cook_btn"
+
+#activate_cook_form
+	= form_for @cook do |f|
+		%h5= "Titre du cook :"
+		= f.text_field :title, required: true
+		%h5= "Gendre :"
+		= f.select :gender, options_for_select(["Homme","Femme"]) 
+		%h5= "Introduction :"
+		= f.text_field :introduction
+		%h5= "Téléphone de contact :"
+		= f.text_field :phone_number
+		%h5= text_field_tag :address, 'address', value: '', placeholder: 'Mon adresse', class: ''
+		%h5= "Distance de travail :"
+		= f.select :working_distance, options_for_select(["5","10","15","20","25","30","35","40","45","50"]) 
+		= f.hidden_field :lat, "data-geo"=>"lat", required: true
+		= f.hidden_field :lng, "data-geo"=>'lng', required: true
+		= f.hidden_field :formatted_address, "data-geo"=>'formatted_address', required: true
+		= f.hidden_field :street_number, "data-geo"=>'street_number'
+		= f.hidden_field :route, "data-geo"=>'route'	
+		= f.hidden_field :locality, "data-geo"=>'locality', required: true
+		= f.text_field :postal_code, readonly: :true, "data-geo"=>'postal_code', required: true
+		= f.hidden_field :administrative_area_level_1, "data-geo"=>'administrative_area_level_1', required: true		
+		= f.hidden_field :country, "data-geo"=>'country', required: true
+		= submit_tag "Activer mon cook", class: 'btn btn-info'
+		= link_to "Annuler", "", remote: true, class: 'btn btn-danger', id: "cancel_cook_btn"

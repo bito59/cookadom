@@ -7,17 +7,3 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 
-dishtype_list = [
-  [ "Plat", 0 ],
-  [ "Entrée", 1 ],
-  [ "Dessert", 2 ],
-  [ "Soupe", 3 ],
-  [ "Fromage", 4 ],
-  [ "Apéro", 5 ],
-  [ "Cocktail", 6 ],
-  [ "Vin", 7 ],
-]
-
-dishtype_list.each do |name, id|
-  Dishtype.create( name: name, id: id )
-end

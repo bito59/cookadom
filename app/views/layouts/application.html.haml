@@ -1,7 +1,6 @@
 !!! 5
 %html
 %head
-	%title Cook@dom
 	= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
 	= javascript_include_tag 'application', 'data-turbolinks-track' => true
 	
@@ -12,52 +11,66 @@
 
 	= csrf_meta_tags
 
-- if notice
-	#notice_wrapper
-		%p.notice
-			=notice
-- if alert
-	#notice_wrapper
-		%p.alert
-			=alert
+#flash_msg
+	= render_flash
+= render :partial => 'shared/modal_accounts'
+
+%header
+	= navbar fixed: :top do
+		= navbar_header brand: 'Cook@dom', brand_link: root_path
+		= navbar_collapse do
+			= navbar_group class: 'no-hide', align: 'right' do
+				- if user_signed_in?
+					= navbar_dropdown current_user.pseudo do
+						= navbar_dropdown_header ('chez ' + current_user.pseudo)
+						= navbar_item "Mon compte", user_path(current_user)
+						= navbar_item "Mes recettes", user_recipebook_path(@user)
+						= navbar_item "Déconnection", destroy_user_session_path, {method: 'delete'}
+				- else
+					= navbar_text 'Connection', class: "account_link connect_account"
+					= navbar_text 'Créer mon compte', class: "account_link create_account"
+
 
 %body
-	%nav.navbar.navbar-default
+
+	.container_screened
 		.container
-			%ul.nav.navbar-nav.navbar-left
-				.navbar-brand= link_to "Cook@dom", root_path
-			- if user_signed_in?
-				%ul.nav.navbar-nav.navbar-right
-					= link_to image_tag("icons/header/user.png", title: ("chez " + current_user.pseudo), :size => "50x50"), user_path(current_user)
-					= link_to image_tag("icons/header/recipe book.png", title: "mes recettes", :size => "50x50"), myrecipes_path()
-					= link_to image_tag("icons/header/exit.png", title: "Sign Out", :size => "50x50"), destroy_user_session_path, method: :delete
-
-			- else
-				%ul.nav.navbar-nav.navbar-right
-					%li= link_to "Créer mon compte", new_user_registration_path
-					%li= link_to "Connection", new_user_session_path
-
-	.container
-		= yield
+			- unless current_page?(root_url)
+				= render :partial => 'shared/searchbar'
+			= yield
 
 %footer
-	%nav.navbar.navbar-default
-		.container
-			%ul.nav.navbar-nav.navbar-left
-				%h3='Retrouvez nous sur :'
-				%h3= "Contact"
-				%h3= mail_to("cookadom@gmail.com")
-				%h3= link_to 'Nos CGV', root_path
-				%h3= "© Cook@dom 2015"
+	.text
+		%h3= mail_to("cookadom@gmail.com")
+		%h3.smallhide= "|"
+		%h3= link_to 'Nos conditions', root_path
+		%h3.smallhide= "|"
+		%h3= "© Cook@dom 2015"
+	.follow
+		= image_tag "icons/facebook.png", class: "icon"
+		= image_tag "icons/pinterest.png", class: "icon"
+
 
 :javascript
 	$(document).ready(function(){
 		setTimeout(function(){
-			$('#notice_wrapper').fadeOut("slow", function() {
+			$('#flash_msg').fadeOut("slow", function() {
 				$(this).remove();
 			});
-		}, 3500);
+		}, 4000);
 		geocomp("address");
 	});
+
+	$('.create_account').click(function() {
+		$('#account').fadeIn("slow");
+		$('#create-account').show();
+		$('#connect-account').hide();
+	});
+	$('.connect_account').click(function() {
+		$('#account').fadeIn("slow");
+		$('#connect-account').show();
+		$('#create-account').hide();
+	});
+
 
 

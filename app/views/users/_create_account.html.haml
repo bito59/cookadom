@@ -1,0 +1,6 @@
+= form_tag registration_path(:user), html: { autocomplete: "off" } do
+  = text_field_tag 'user[email]', nil, placeholder: 'email', required: true
+  = text_field_tag 'user[pseudo]', nil, placeholder: 'pseudo', required: true
+  = password_field_tag 'user[password]', nil, placeholder: 'password', required: true
+  = password_field_tag 'user[password_confirmation]', nil, placeholder: 'confirm password', required: true
+  %button Valider

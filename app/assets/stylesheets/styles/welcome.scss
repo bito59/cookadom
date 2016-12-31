@@ -1,0 +1,260 @@
+.fullpage {
+	display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* align items in Main Axis */
+    align-items: stretch; /* align items in Cross Axis */
+    align-content: stretch; /* Extra space in Cross Axis */
+    .page1 {
+    	position: relative;
+    	.font_picture {
+    		//height: 100vh;
+			height: -moz-calc(100vh - 70px); /* Firefox */
+			height: -webkit-calc(100vh - 70px); /* Chrome, Safari */
+			height: calc(100vh - 70px); /* IE9+ and future browsers */
+		   	width: 100vw;
+
+			background-repeat: no-repeat;
+		 	background-position: center center;
+		 	background-attachment: fixed;
+			background-size: cover;
+			background-color: white;
+		}
+		.jingle {
+			position: absolute;
+		    top: 0px;
+			width: 100vw;
+			height: 80px;
+			background-color: rgba(141,198,63,0.7);
+			display: flex;
+			flex-flow: row nowrap;
+			justify-content: center;
+			align-items: center;
+			h2 {
+				font-family: playball;
+				color: white;
+				text-align: center;
+				padding-right : 10px;
+				padding-left : 10px;
+				@media #{$desktop} {font-size: 50px;}
+				@media #{$tablet} {font-size: 35px;}
+				@media #{$phone} {font-size: 30px;}
+			}
+		}		 
+		.pub {
+			@media #{$phone} {display:none}
+			@media #{$tablet} {display:none}
+			@media #{$desktop} {top: 60px}
+			@media #{$bigscreen} {top: 20px}
+			position: absolute;
+			right: 30px;
+			width: 200px;
+		    height: 100px;
+		    background-color: white;
+		    border-radius: 25px;
+		    border: 2px solid $bamboo;
+		   	display: flex;
+		    flex-flow: column nowrap;
+		    justify-content: center;
+		    h2 {
+		    	font-size: 1.1em;
+		  		color: $midgrey;
+		  		padding-top: 15px;
+    			font-weight: 600;
+		    }
+		    .btn_pub {
+		    	margin-top: 10px;
+		    	margin-bottom: 10px;
+				font-size: 1.7em;
+				color: $bamboo;
+		    }
+		}
+		.search_area {
+			position: absolute;
+			top: 40%;
+			left: 50%;
+			.search_adress {
+				transform: translate(-50%, -50%);
+				width: 70vw;
+			    max-width: 800px;
+			    height: 60px;
+				border-radius: 25px;
+			    border: 2px solid $bamboo;
+			    margin-bottom: 50px; 
+			    background-color: white;
+
+			    display: flex;
+			    flex-flow: row nowrap;
+			    justify-content: space-between;
+			    align-items: center;
+			    padding: 20px;
+			    .icon_search {
+			  	    height: 40px;
+				    width: 40px;
+					@media #{$smallscreen} {
+						height: 20px;
+				    	width: 20px;
+					}
+			    }
+				.icon_cook {
+			  	    height: 40px;
+				    width: 40px;
+					@media #{$smallscreen} {display:none}
+				}
+				.address_field {
+					width: 600px;
+					font-style: italic;
+					font-size: 1.5em;
+					@media #{$smallscreen} {
+						font-size: 1em;
+					}
+				}
+			}
+			.btn_search_cook {
+			    transform: translate(-50%, -50%);
+				width: 300px;
+			    height: 60px;
+				border-radius: 25px;
+			    border: 2px solid $bamboo;
+			    background-color: white;
+			    
+			    display: flex;
+			    flex-flow: row nowrap;
+			    justify-content: space-between;
+			    align-items: center;
+			    padding: 20px;
+			    .nothing {}
+			    .search_cook {
+			    	font-size: 2em;
+			    }
+				.icon_seach_cook {
+					height: 40px;
+				    width: 40px;
+				}
+			}
+		}
+	}
+	.page2 {
+			height: -moz-calc(100vh - 70px - 70px); /* Firefox */
+			height: -webkit-calc(100vh - 70px - 70px); /* Chrome, Safari */
+			height: calc(100vh - 70px - 70px); /* IE9+ and future browsers */
+		.process-title {
+			color: $darkgrey;
+			font-weight: bold;
+			font-size: 30px;
+		}
+		.process {
+			margin-top: 40px;
+			margin-bottom: 30px;
+			width: 100%;
+			//padding: 20px;
+			display: flex;
+		    flex-flow: row wrap;
+		    justify-content: center;
+		    align-items: flex-start;
+		    .process-block {
+				width: 15%;
+				min-width: 180px;
+				max-width: 250px;
+				margin: 0 10px 0 10px;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: space-around;
+				.process-picture {
+					margin-bottom: 10px;
+					@media #{$desktop} {width: 100px; height: 100px;}
+					@media #{$tablet} {width: 80px; height: 80px;}
+					@media #{$phone} {width: 70px; height: 70px;}
+				}
+				h5 {
+					font-size: 18px;
+					max-width: 200px;
+					color: $midgrey;
+				}
+
+		    } 
+		}
+		.strengh {
+			width: 100%;
+			display: flex;
+		    flex-flow: row wrap;
+		    justify-content: center;
+		    align-items: flex-start;
+		    .strengh-block {
+		    // 2 areas on the left
+		    	//margin-top: 20px;
+				@media #{$desktop} {width: 30%;}
+				@media #{$tablet} {width: 50%;}
+				@media #{$phone} {width: 80%;}
+				max-width: 300px;
+				margin: 0 30px 30px 30px;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				h2 {
+					line-height: 30px;
+					font-weight: bold;
+					text-align: left;
+					margin-right: auto;
+					font-size: 22px;
+					color: $darkgrey;
+				}
+				h5 {
+					font-size: 18px;
+					color: $midgrey;
+					margin-bottom: 30px;
+				}
+				.strengh-picture {
+					max-height: 150px;
+					object-fit: cover;
+					width: 50%;
+					min-width: 200px;
+					margin-bottom: 30px;
+				}
+				.btn-strength {
+					width: 240px;
+				    height: 60px;
+					border-radius: 10px;
+				    background-color: $mediumgrey;
+				    
+				    display: flex;
+				    flex-flow: row nowrap;
+				    justify-content: space-between;
+				    align-items: center;
+				    padding: 20px;
+				    .nothing {}
+				    .btn-text {
+				    	font-size: 1.5em;
+				    	color: white;
+				    }
+					.btn-icon {
+						height: 40px;
+					    width: 40px;
+					}
+				}
+			// 1 area on the right
+				.doubleline {
+					line-height: 60px;
+					vertical-align: center;
+				}
+		    	.avantage-picture {
+					height: 60px;
+				    width: 60px;
+				    text-align: center;
+				}
+				table {
+					td {
+						text-align: center;
+				    	font-size: 15px;
+				    	color: $midgrey;
+				    	max-width: 220px;
+				    	height: 64px;
+				    }
+				}
+		    } 
+		}
+	}
+}
+
+

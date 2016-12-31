@@ -1,0 +1,22 @@
+%h5='Détails de mon cook'
+%h5='Titre du cook : '
+%h5= editable @cook, :title, value: @cook.title
+=link_to "Désactiver mon cook", cook_path(@cook), method: :delete, data: {confirm: "Votre cuisinier et toutes vos recettes seront supprimées ! Etes-vous sûr ?"}, class: 'btn btn-danger'
+%h5='Sexe : '
+%h5= editable @cook, :gender, value: @cook.gender 
+%h5='Introduction : '
+%h5= editable @cook, :introduction, value: @cook.introduction
+%h5='Téléphone de contact : '
+%h5= editable @cook, :phone_number, value: @cook.phone_number
+- if @cook.verified_phone == true
+	= image_tag "process/icons/ok.png", class: "logo_process"
+	%h5 Numéro vérifié
+%h5='Localisation : '
+%h5= @cook.formatted_address
+%h5='Distance de travail : '
+%h5= editable @cook, :working_distance, value: @cook.working_distance
+%h5=' km'
+
+=link_to pluralize(@recipes.count, 'recette proposée'), cook_recipes_path(@cook)
+- @recipes.each do |recipe|
+	=link_to recipe.title, [@cook, recipe]

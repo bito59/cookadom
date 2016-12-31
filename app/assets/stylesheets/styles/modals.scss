@@ -1,0 +1,119 @@
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    //overflow: auto; /* Enable scroll if needed */
+    //background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    border: 1px solid #888;
+    top:50%; 
+    left:50%;
+    transform: translate(-50%, -50%);
+    height: 400px;
+    font-family: $font;
+    @media #{$desktop} {width: 50%;}
+	@media #{$tablet} {width: 70%;}
+	@media #{$phone} {width: 80%;}
+    max-width: 400px;
+	.modal-header {
+		background-color: $bamboo;
+		width: 100%;
+		height: 50px;
+ 		display: flex;
+	    align-items: center;
+		h3 {
+			width: 100%;
+			text-align: center;
+			color: white;
+		}
+		.close {
+		    cursor: pointer;
+		    position: absolute;
+		    right: 20px;
+		}
+		.close:hover, .close:focus {
+		    color: black;
+		    text-decoration: none;
+		    cursor: pointer;
+		}
+	}
+	.modal-body {
+		background-color: white;
+		width: 100%;
+		height: 400px;
+		.form-center {
+			padding-top: 30px;
+			margin-bottom: 20px;
+			display: flex;
+			flex-flow: column nowrap;
+			justify-content: center;
+		    align-items: center;
+		    input {
+		    	margin-bottom:10px;
+		    	background-color: white!important;
+		    	height: 40px;
+		    	width: 60%;
+		    	font-size: 1em;
+		    	border: 2px solid;
+	    		border-color: $lightgrey;
+	    		border-radius: 5px;
+		    }
+			.btn-account {
+				margin-top: 20px;
+				background-color:$midgrey;
+				-moz-border-radius:6px;
+				-webkit-border-radius:6px;
+				border-radius:5px;
+				cursor: pointer;
+				color: white;
+				font-size:14px;
+				padding:9px 12px;
+				text-decoration:none;
+				text-transform: uppercase;
+			}
+		}
+	    .forgot {
+			font-style: italic;
+		}
+
+	}
+	.link-new-user {
+		position: absolute;
+		top: 100%;
+		height: 50px;
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		h3 {
+			font-size:12px;
+		}
+		.register-link {
+			text-transform: uppercase;
+			font-size:14px;
+			font-weight: 600;
+    		color: #e77e23;
+		}
+		.register-link:hover {
+			color: $darkgrey;
+			cursor: pointer;
+		}
+		.register-link {
+		 -webkit-transition: color 0.4s ease-out;
+		 -moz-transition: color 0.4s ease-out;
+		 -o-transition: color 0.4s ease-out;
+		 -ms-transition: color 0.4s ease-out;
+		 transition: color 0.4s ease-out;
+		 }
+	}
+}
+
+
+

@@ -1,0 +1,52 @@
+%h1='Mon compte'
+.row
+	.col-xs-6
+		.row
+			#account_details
+				= image_tag @user.avatar.url, class: "circular"
+				%h5='Votre pseudo (affiché sur le site) : ' + @user.pseudo
+				%h5='Votre email (non affiché sur le site) : ' + @user.email
+				=link_to "Modifier le compte", "", remote: true, class: 'btn btn-info', id: "modif_account_btn"
+
+			= render :partial => 'change_account', user: @user			
+
+	.col-xs-6
+		.row
+			.col-xs-6
+				%h4 Mon book de recettes
+				= pluralize(@nb_like, ' recette')
+			.col-xs-6
+				- if @user.nb_liked > 0
+					= link_to "Vider", like_recipe_path, data: { confirm: "Vider votre book ?" }, method: :delete, class: 'btn btn-danger'
+		.row
+			- if @new_cook == false
+				=link_to "Créer une recette", cook_recipes_path(@cook.id), method: :post, class: 'btn btn-info'
+.row
+	- if @new_cook == true
+		= render :partial => 'activate_cook', user: @user, cook: @cook
+	- else
+		= render :partial => 'show_cook', user: @user, cook: @cook
+
+
+:javascript
+	$(document).ready(function() {
+	 	$('#activate_cook_form').hide();
+	 	$('#modif_account_form').hide();
+	});
+	$('#modif_account_btn').click(function() {
+		$('#account_details').hide();
+		$('#modif_account_form').show();
+	});
+	$('#cancel_account_modif_btn').click(function() {
+		$('#modif_account_form').hide();
+		$('#account_details').show();
+	});	
+	$('#become_cook_btn').click(function() {
+		$('#activate_cook_form').show();
+		$('#become_cook').hide();
+	});
+	$('#cancel_cook_btn').click(function() {
+		$('#activate_cook_form').hide();
+		$('#become_cook_btn').show();
+	});
+	

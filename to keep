@@ -1,3 +1,80 @@
+$(document).on("click", function(event) {
+	    if (!$(event.target).parents('.no_hide').length) {
+	    	if ($("#account").is(":visible")) {
+				$("#account").fadeOut("slow");
+	    	}
+	    }
+	    if (!$(event.target).parents('.user_area').length) {
+	    	if ($("#user_popup").is(":visible")) {
+				$("#user_popup").fadeOut("slow");
+	    	}
+	    }
+	});
+
+	$('#create_account').click(function() {
+		$('#create_form').fadeIn("slow");
+		$('#connect_form').hide();
+		$('#account').fadeIn("slow");
+	});
+
+	$('#connect_account').click(function() {
+		$('#connect_form').fadeIn("slow");
+		$('#create_form').hide();
+		$('#account').fadeIn("slow");
+	});
+
+	$('#user_link').click(function() {
+		$('#user_popup').fadeIn("slow");
+	});
+
+#account{style: "display:none"}
+				#connect_form{style: "display:none"}
+					= render :partial => 'users/connect_account'
+				#create_form{style: "display:none"}
+					= render :partial => 'users/create_account'
+
+//.btn_search_cook
+	//= submit_tag "voir les cooks", class: 'search_cook'
+	//= image_tag "icons/chef.png", class: "icon_seach_cook"
+
+
+{style: "background-image: url(<%= welcome_font/welcome#{rand(5)}.jpg' %>)"}
+
+.nav.navbar.navbar-default
+		.container-fluid
+			.navbar-header
+				= link_to "Cook@dom", root_path, class: "navbar-brand logo"
+			%ul.nav.navbar-nav.navbar-right
+				- if user_signed_in?
+					.user_area
+						#user_link.user_link
+							= content_tag("a", current_user.pseudo)
+						#user_popup.user_popup
+							= link_to "mon compte", user_path(current_user)
+							= link_to "mes recettes", user_recipebook_path(@user)
+							= link_to "Déconnection", destroy_user_session_path, method: :delete
+							//content_tag(:li, link_to("3", users_path))
+				- else
+					%li= link_to "Créer mon compte", '', remote: true, id: "create_account"
+					%li= link_to "Connection", '', remote: true, id: "connect_account"
+
+
+
+dishtype_list = [
+  [ "Plat", 0 ],
+  [ "Entrée", 1 ],
+  [ "Dessert", 2 ],
+  [ "Soupe", 3 ],
+  [ "Fromage", 4 ],
+  [ "Apéro", 5 ],
+  [ "Cocktail", 6 ],
+  [ "Vin", 7 ],
+]
+
+dishtype_list.each do |name, id|
+  Dishtype.create( name: name, id: id )
+end
+
 
 // AJAX with Json
 	$(document).ready(function(){

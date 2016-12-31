@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151113185310) do
+ActiveRecord::Schema.define(version: 20160204184858) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,11 +45,13 @@ ActiveRecord::Schema.define(version: 20151113185310) do
     t.string   "working_distance"
     t.text     "introduction"
     t.string   "gender"
+    t.float    "price"
     t.integer  "language1_id"
     t.integer  "language2_id"
     t.integer  "language3_id"
     t.datetime "created_at",                                  null: false
     t.datetime "updated_at",                                  null: false
+    t.string   "slug"
   end
 
   add_index "cooks", ["user_id"], name: "index_cooks_on_user_id", using: :btree
@@ -165,6 +167,7 @@ ActiveRecord::Schema.define(version: 20151113185310) do
     t.string   "unconfirmed_email"
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
+    t.string   "slug"
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree

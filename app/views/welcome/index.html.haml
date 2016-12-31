@@ -1,83 +1,98 @@
-#fullpage
-	.row.section
-		//welcome :page 1
-		#jingle.jingle
-			%h2 Vivez la découverte entre amis depuis votre cuisine !
-		= image_tag "welcome_font/welcome#{rand(5)}.jpg", class: "font_picture"
-		#search_area.search_area
-			.row
-				.col-sm-2
-					= image_tag "icons/position.png", class: "logo_field"
-				.col-sm-8
-					%h2= text_field_tag :address, 'address', value: '', placeholder: 'Adresse de ma cuisine', class: ''
-				.col-sm-2
-					= image_tag "icons/kitchen.png", class: "logo_field"
+.fullpage
+	.row.no-gutter.section.page1
+		.font_picture{ style: "background-image: url('/assets/welcome_font/welcome#{rand(5)}.jpg')" }
+		.jingle
+			%h2 Apprenez dans votre cuisine !
+		- if @cook.nil?
+			.pub
+				%h2 Vous avez un talent culinaire ?
+				- if user_signed_in?
+					=link_to "Devenez cook", user_path(current_user), class: 'btn_pub'
+				- else
+					= navbar_text 'Devenez cook', class: "btn_pub create_account no-hide"
 
+		.search_area
+			.search_adress
+				= image_tag "icons/position.png", class: "icon_search"
+				= text_field_tag :address, 'address', value: '', placeholder: "Chercher autour d'une adresse", class: 'address_field'
+				= image_tag "icons/kitchen.png", class: "icon_cook"
 			= form_tag cooks_path, :method => :get do
 				= hidden_field_tag(:lat, 'no', "data-geo"=>"lat")
 				= hidden_field_tag(:lng, 'no', "data-geo"=>"lng")
 				= hidden_field_tag(:formatted_address, 'no', "data-geo"=>"formatted_address")
-				= submit_tag "VOIR LES COOKS", class: 'btn_search_cook'
+				.btn_search_cook
+					.nothing
+					= submit_tag "voir les cooks", class: 'search_cook'
+					= image_tag "icons/chef.png", class: "icon_seach_cook"
 
-		#pub.pub
-			- if @cook.nil?
-				%h2 Vous avez un talent culinaire ?
-				=link_to "Devenez cook", new_user_registration_path, class: 'btn_pub'
+	.row.no-gutter.section.page2
+		%h2.process-title Comment ça marche ?
+		.process
+			.process-block
+				= image_tag "process/cook.png", class: "process-picture"
+				%h5 Cherchez un cook autour de chez vous
+			.process-block
+				= image_tag "process/menu.png", class: "process-picture"
+				%h5 Choisissez votre menu et contactez-le
+			.process-block
+				= image_tag "process/shop.png", class: "process-picture"
+				%h5 Faites les courses en gérant votre budget
+			.process-block
+				= image_tag "process/cooking.png", class: "process-picture"
+				%h5 Cuisinez sous les conseils du cook
+			.process-block
+				= image_tag "process/party.png", class: "process-picture"
+				%h5 Partagez ce moment en recevant chez vous !
 
-	.row.section
-		//welcome :page 2
-		#process
-			%h2 Comment ça marche ?
-			.process_block
-				= image_tag "process/cook.png", class: "logo_process"
-				%h5 Trouvez autour de chez vous le cook qui vous intéresse
-			.process_block
-				= image_tag "process/menu.png", class: "logo_process"
-				%h5 Choisissez la prestation et contactez-le
-			.process_block
-				= image_tag "process/shop.png", class: "logo_process"
-				%h5 Faites les courses ou demandez-les au cook
-			.process_block
-				= image_tag "process/cooking.png", class: "logo_process"
-				%h5 Cuisinez et apprenez avec les conseils du cook
-			.process_block
-				= image_tag "process/party.png", class: "logo_process"
-				%h5 Vivez l'expérience en recevant chez vous !
+		.strengh
+			.strengh-block
+				%h2 Hôtes : </br> Recevez chez vous !
+				%h5 Une expérience de découverte conviviale pour un budget limité
+				= image_tag "welcome_hote.png", class: "strengh-picture"
+				.btn-strength
+					= link_to "voir les cooks", cooks_path, class: 'btn-text'
+					= image_tag "icons/button welcome/cook white.png", class: "btn-icon"
 
-		#content
-			%h2 Hôtes : recevez différemment chez vous
-			%h5 Organisez un moment convivial de découverte culinaire pour un budget limité
-			= image_tag "welcome_hote.png", class: "welcome_picture"
-			=link_to "chercher un cook", cooks_path, class: 'btn_search_cook'
-			= image_tag "icons/button welcome/cook white.png"
+			.strengh-block
+				%h2 Cooks : </br> Partagez votre talent !
+				%h5 Proposez vos services à domicile sans contraintes
+				= image_tag "welcome_chef.png", class: "strengh-picture"
+				.btn-strength
+					- if user_signed_in?
+						=link_to "Devenez cook", user_path(current_user), class: 'btn-text'
+					- else
+						= link_to 'Devenir cook', '#', remote: :true, id: 'btn-strength', class: "btn-text"
+					= image_tag "icons/button welcome/cooking white.png", class: "btn-icon"
 
-		#content
-			%h2 Cooks : Partagez votre talent
-			%h5 Proposez des cours à domicile sans contraintes
-			= image_tag "welcome_chef.png", class: "welcome_picture"
-			=link_to "devenir cook", new_cook_path, class: 'btn_become_cook'
-			= image_tag "icons/button welcome/cooking white.png"
-
-		#content
-			%h2 Les avantages cookadom
-			.avantage_block
-				= image_tag "avantages/degree.png"
-				%h5 Contrôlez le niveau du cook et sa spécialité
-			.avantage_block
-				= image_tag "avantages/star.png"
-				%h5 Vérifiez les commentaires et avis sur le cook
-			.avantage_block
-				= image_tag "avantages/pay.png"
-				%h5 Payez le cook après la prestation en main propre
-			.avantage_block
-				= image_tag "avantages/calendar.png"
-				%h5 Gérez votre organisation directement avec le cook
-			.avantage_block
-				= image_tag "avantages/book.png"
-				%h5 Retrouvez vos recettes sur le site
+			.strengh-block
+				%h2.doubleline Les avantages cookadom
+				%table
+					%tbody
+						%tr
+							%td= image_tag "avantages/degree.png", class: 'avantage-picture'
+							%td.table-text= "Contrôlez le niveau du cook et sa spécialité"
+						%tr
+							%td= image_tag "avantages/star.png", class: 'avantage-picture'
+							%td= "Vérifiez les commentaires et avis sur le cook"
+						%tr
+							%td= image_tag "avantages/pay.png", class: 'avantage-picture'
+							%td= "Payez le cook après la prestation en main propre"
+						%tr
+							%td= image_tag "avantages/calendar.png", class: 'avantage-picture'
+							%td= "Gérez votre organisation directement avec le cook"
+						%tr
+							%td= image_tag "avantages/book.png", class: 'avantage-picture'
+							%td= "Retrouvez vos recettes sur le site"
+			
 
 :javascript
 
 	$(document).ready(function() {
 	    $('#fulpage').fullpage();
+	});
+
+	$('#btn-strength').click(function() {
+		$('#account').fadeIn("slow");
+		$('#create-account').show();
+		$('#connect-account').hide();
 	});

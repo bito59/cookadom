@@ -1,0 +1,35 @@
+#modif_account_form
+    = form_for current_user, path: registration_path(current_user), method: :put do |f|
+        = image_tag @user.avatar.url, class: "circular"
+        = f.file_field :avatar
+        %br
+        = f.text_field :email, required: true, value: current_user.email
+        = f.text_field :pseudo, required: true, value: current_user.pseudo
+        %br
+        #new_password_form
+            = f.password_field :password, autocomplete: "off", placeholder: "nouveau mot de passe", required: false
+            = f.password_field :password_confirmation, autocomplete: "off", placeholder: "nouveau mot de passe", required: false
+            = link_to "Annuler", "", remote: true, id: "cancel_password_change_btn"
+
+        = f.password_field :current_password, autocomplete: "off", placeholder: "mot de passe actuel", required: true
+        =link_to "Changer le mot de passe", "", remote: true, id: "password_change_btn"
+        
+        = f.submit "Valider les modifications", class: 'btn btn-primary'
+
+        %br
+        = link_to "Annuler", "", remote: true, class: 'btn btn-info', id: "cancel_account_modif_btn"
+        =link_to "Supprimer le compte", user_path(@user), data: { confirm: "Toutes les données de votre compte seront supprimées ! Etes-vous sûr ?" }, method: :delete, class: 'btn btn-danger'
+
+
+:javascript
+    $(document).ready(function() {
+        $('#new_password_form').hide();
+    });
+    $('#password_change_btn').click(function() {
+        $('#password_change_btn').hide();
+        $('#new_password_form').show();
+    });
+    $('#cancel_password_change_btn').click(function() {
+        $('#new_password_form').hide();
+        $('#password_change_btn').show();
+    });

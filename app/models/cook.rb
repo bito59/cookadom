@@ -5,7 +5,8 @@ class Cook < ActiveRecord::Base
 	belongs_to :user
 	has_many :recipes, dependent: :destroy	
 
-	validates_uniqueness_of :user_id, :message => "The cook is already used once"
+	validates_uniqueness_of :user_id, :message => "The cook is already activated"
+	validates_uniqueness_of :title, :message => "This cook name is already used"
 	validates_presence_of :title, :lat, :lng, :phone_number,
 			:formatted_address, :locality, 
 			:postal_code, :administrative_area_level_1, :country,
@@ -13,13 +14,16 @@ class Cook < ActiveRecord::Base
 
 	reverse_geocoded_by :lat, :lng
 
+	#friendly_ID to show the user pseudo of cook instead of IDs
+	extend FriendlyId
+	friendly_id :title, use: :slugged
 
 	def rating
 		self.nb_avis = Comment.where(:cook_id == self.id).count
 		self.nb_stars = 1
 	end
 
-	def nb_languages
+	def nb_languages?
 		p = [self.language1_id, self.language2_id, self.language3_id]
 		self.nb_languages = p.compact.count
 	end

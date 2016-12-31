@@ -2,27 +2,20 @@
 .row
 	.col-xs-6
 		.row
-			%h5='Votre pseudo (affiché sur le site) : '
-			%h5= editable @user, :pseudo, value: @user.pseudo
-			= image_tag(@user.avatar.url)
-			%h5='Votre email (non affiché sur le site) : ' + @user.email
-			=link_to "Modifier le compte", '', remote: true, class: 'btn btn-info', id: "modif_account"
-			#modif_account_form
-				= form_for current_user, path: registration_path(current_user), method: :put do |f|
-					%h5="Nouvel email"
-					= f.text_field :email, required: true
-					%h5="Nouveau mot de passe"
-					= f.password_field :password, palceholder: "laisser vide si pas de modification", required: false
-					%h5="Nouveau mot de passe (confirmation)"
-					= f.password_field :password_confirmation, palceholder: "laisser vide si pas de modification", required: false
-					%h5="Mot de passe actuel"
-					= f.password_field :current_password, required: true
-					= f.submit "Valider les modifications", class: 'btn btn-primary'
-					= link_to "Annuler", "", remote: true, class: 'btn btn-danger', id: "cancel_account_modif"
+			#account_details
+				%h5='Votre pseudo (affiché sur le site) : ' + @user.pseudo
+				%h5='Votre email (non affiché sur le site) : ' + @user.email
+				= image_tag(@user.avatar.url)
+				=link_to "Modifier le compte", '', remote: true, class: 'btn btn-info', id: "modif_account"
+
+			#account_form
+				= render partial: 'users/shared/change_account', user: @user
 		.row
-			=link_to "Supprimer le compte", user_path(@user), data: { confirm: "Toutes les données de votre compte seront supprimées ! Etes-vous sûr ?" }, method: :delete, class: 'btn btn-danger'
 			#btn_modify
 				= image_tag "icons/edit.png"
+			
+
+
 
 	.col-xs-6
 		.row
@@ -30,7 +23,7 @@
 				%h4 Mon book de recettes
 				= pluralize(@nb_like, ' recette')
 			.col-xs-6
-				- if @nb_like > 0
+				- if @user.nb_liked > 0
 					= link_to "Vider", like_recipe_path, data: { confirm: "Vider votre book ?" }, method: :delete, class: 'btn btn-danger'
 		.row
 			- if @new_cook == false
@@ -88,28 +81,25 @@
 		- @recipes.each do |recipe|
 			=link_to recipe.title, [@cook, recipe]
 
-	= form_for(@user, multipart: true) do |f|
-		= f.label :avatar
-		= f.file_field :avatar
-		= f.submit 'Poster la tof'
+
 
 :javascript
 	$(document).ready(function() {
 		$('.editable').editable('disable');
 	 	$('#cook_form').hide();
-	 	$('#modif_account_form').hide();
-	 	$('#modif_account').hide();
+	 	$('#account_form').hide();
+	 	$('#btn_modify').hide();
 	});
 	$("#btn_modify").click(function() {
 		$('.editable').editable('toggleDisabled');
 	});
 	$('#modif_account').click(function() {
-		$('#modif_account').hide();
-		$('#modif_account_form').show();
+		$('#account_details').hide();
+		$('#account_form').show();
 	});
 	$('#cancel_account_modif').click(function() {
-		$('#modif_account_form').hide();
-		$('#modif_account').show();
+		$('#account_form').hide();
+		$('#account_details').show();
 	});	
 	$('#become_cook').click(function() {
 		$('#cook_form').show();

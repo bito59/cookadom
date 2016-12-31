@@ -12,10 +12,22 @@ class User < ActiveRecord::Base
   has_many :like_recipes, dependent: :destroy
   has_many :recipes, through: :like_recipes
 
-  has_attached_file :avatar, styles: { thumb: "200x200#" }
+  has_attached_file :avatar, 
+    styles: { thumb: "200x200#" }, default_url: "avatar/default.jpg",
+    :path => "/users/:id/avatar/:filename"
+
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
 
-  validates :pseudo, presence: true
+  validates :pseudo, presence: { message: "Pseudo is required" } , uniqueness: { message: "Pseudo already used" } 
+  validates :email, presence: { message: "Email is required" } , uniqueness: { message: "Email already used" } 
+
+  attr_accessor :nb_liked
+  #before_save :generate_new_friendly_id
+
+  # friendly_ID to show the pseudo of users instead of IDs
+  extend FriendlyId
+  friendly_id :pseudo, use: :slugged
+
 
   # creates a new heart row with post_id and user_id
   def like_recipe!(recipe)
@@ -33,8 +45,12 @@ class User < ActiveRecord::Base
     self.like_recipes.find_by_recipe_id(recipe.id)
   end
 
+  #def nb_liked?
+    #LikeRecipe.where(user_id: self.id).count
+  #end
+
   def nb_liked?
-    LikeRecipe.where(user_id: self.id).count
+    self.nb_liked = LikeRecipe.where(user_id: self.id).count
   end
          
 end

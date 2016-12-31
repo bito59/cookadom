@@ -12,11 +12,11 @@ fr:
     failure:
       already_authenticated: "Vous êtes déjà connecté"
       inactive: "Votre compte n'est pas encore activé."
-      invalid: "%{authentication_keys} ou mot de passe incorrect."
+      invalid: "Mot de passe incorrect."
       locked: "Votre compte est verrouillé."
       last_attempt: "Vous avez droit à une tentative avant que votre compte ne soit verrouillé."
       locked: "Votre compte est verrouillé."
-      not_found_in_database: "%{authentication_keys} ou mot de passe incorrect."
+      not_found_in_database: "%{authentication_keys} non trouvé."
       timeout: "Votre session est expirée. Veuillez vous reconnecter pour continuer."
       unauthenticated: "Vous devez vous connecter ou vous inscrire pour continuer."
       unconfirmed: "Vous devez confirmer votre compte pour continuer."
@@ -44,6 +44,7 @@ fr:
       signed_up_but_unconfirmed: 'Un message contenant un lien de confirmation a été envoyé à votre adresse email. Ouvrez ce lien pour confirmer votre compte.'
       update_needs_confirmation: "Votre compte a bien été mis à jour mais nous devons vérifier votre nouvelle adresse email. Merci de vérifier vos emails et de cliquer sur le lien de confirmation pour finaliser la validation de votre nouvelle adresse."
       updated: 'Votre compte a été modifié avec succès.'
+      not_signed_up: "Impossible de créer votre compte."
     sessions:
       signed_in: "Vous êtes connecté."
       signed_out: "Vous avez été déconnecté."

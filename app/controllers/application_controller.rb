@@ -2,8 +2,20 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
 
-  	before_filter :configure_permitted_parameters, if: :devise_controller?
-  	protect_from_forgery with: :exception
+	before_filter :configure_permitted_parameters, if: :devise_controller?
+	protect_from_forgery with: :exception
+  add_flash_types :success, :warning, :info
+
+  before_action :find_user
+
+  private
+
+  def find_user
+      if current_user.present?
+      @user = User.friendly.find(current_user[:id])
+    end
+  end
+
 
   def configure_permitted_parameters
 		devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:first_name, :last_name, :gender, :pseudo, :email, :password, :password_confirmation, :current_password) }
@@ -47,6 +59,30 @@ class ApplicationController < ActionController::Base
         @cooks.delete(cook)
       end
     end
+  end
+
+# Devise rerouting customization
+  def after_sign_in_path_for(resource)
+    request.referrer
+  end
+
+  def after_sign_out_path_for(resource_or_scope)
+    root_path
+  end
+
+# Add-on for using devise in apps modal
+  helper_method :resource_name, :resource, :devise_mapping
+
+  def resource_name
+    :user
+  end
+ 
+  def resource
+    @resource ||= User.new
+  end
+ 
+  def devise_mapping
+    @devise_mapping ||= Devise.mappings[:user]
   end
 
 end
